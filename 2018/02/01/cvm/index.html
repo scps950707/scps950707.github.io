@@ -103,17 +103,19 @@
   <meta name="keywords" content="Hexo, NexT" />
 
 
-<meta name="description" content="¶CVM Some modification  Ignore java class file version check Compile with 32-bit mode in x86_64 system  repo ¶Build ¶x86_32 Makefile is in cdc/build/linux-x86-generic On 64-bit system, only 32-bit mod">
+<meta name="description" content="¶Compact Virtual Machine (CVM) ¶Introduction The Java 2 Platform, Micro Edition (J2ME) is aimed at the market for consumer and embedded electronic devices: cellular telephones, two-way pagers, Persona">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C virtual machine">
 <meta property="og:url" content="scps950707.github.io/2018/02/01/cvm/index.html">
 <meta property="og:site_name" content="scps950707&#39;s blog">
-<meta property="og:description" content="¶CVM Some modification  Ignore java class file version check Compile with 32-bit mode in x86_64 system  repo ¶Build ¶x86_32 Makefile is in cdc/build/linux-x86-generic On 64-bit system, only 32-bit mod">
+<meta property="og:description" content="¶Compact Virtual Machine (CVM) ¶Introduction The Java 2 Platform, Micro Edition (J2ME) is aimed at the market for consumer and embedded electronic devices: cellular telephones, two-way pagers, Persona">
 <meta property="og:locale" content="zh-TW">
-<meta property="og:updated_time" content="2018-02-01T08:01:25.360Z">
+<meta property="og:image" content="http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/158002.gif">
+<meta property="og:updated_time" content="2018-02-01T09:42:56.580Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C virtual machine">
-<meta name="twitter:description" content="¶CVM Some modification  Ignore java class file version check Compile with 32-bit mode in x86_64 system  repo ¶Build ¶x86_32 Makefile is in cdc/build/linux-x86-generic On 64-bit system, only 32-bit mod">
+<meta name="twitter:description" content="¶Compact Virtual Machine (CVM) ¶Introduction The Java 2 Platform, Micro Edition (J2ME) is aimed at the market for consumer and embedded electronic devices: cellular telephones, two-way pagers, Persona">
+<meta name="twitter:image" content="http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/158002.gif">
 
 
 
@@ -330,8 +332,25 @@
       
 
       
-        <h1 id="cvm"><a class="header-anchor" href="#cvm">¶</a>CVM</h1>
-<p>Some modification</p>
+        <h1 id="compact-virtual-machine-cvm"><a class="header-anchor" href="#compact-virtual-machine-cvm">¶</a>Compact Virtual Machine (CVM)</h1>
+<h2 id="introduction"><a class="header-anchor" href="#introduction">¶</a>Introduction</h2>
+<p>The Java 2 Platform, Micro Edition (J2ME) is aimed at the market for consumer and embedded electronic devices: cellular telephones, two-way pagers, Personal Digital Assistants (PDAs), set-top boxes, and other small devices.</p>
+<ol>
+<li>Connected Limited Device Configuration(CDC):cellular phones, pagers, PDAs</li>
+<li>Connected Device Configuration(CDC):set-top boxes, and Internet TVs</li>
+</ol>
+<p>Mobile Information Device Profile (MIDP) runs on top of the CLDC which includes the KVM virtual machine. Several profiles run on top of CDC such as foundation, Personal andPersonal Basis. In this article will focus on CDC’s JVM:Compact Virtual Machine(CVM).</p>
+<p>CVM’s capabilities are similar to the JVMs that support the Java 2 Platform, Standard Edition (J2SE). The main differences lie in the memory and display capabilities of the devices targeted.</p>
+<ul>
+<li>Is powered by a 32-bit processor</li>
+<li>Makes available to the Java runtime at least 2 MB of memory, including both RAM and flash memory or ROM</li>
+<li>Requires the full functionality of the Java Virtual Machine Specification</li>
+<li>Has connectivity to some kind of network, often wireless</li>
+<li>May have a user interface with some degree of sophistication</li>
+</ul>
+<p><img src="http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/158002.gif" alt=""></p>
+<h2 id="porting"><a class="header-anchor" href="#porting">¶</a>Porting</h2>
+<p>To order to fit my research’s need, I made some modifications.</p>
 <ol>
 <li>Ignore java class file version check</li>
 <li>Compile with 32-bit mode in x86_64 system</li>
@@ -344,7 +363,7 @@
 <p>Build with</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make CVM_TARGET_TOOLS_PREFIX=/usr/bin/ J2ME_CLASSLIB=foundation</span><br></pre></td></tr></table></figure>
 <h3 id="arm"><a class="header-anchor" href="#arm">¶</a>ARM</h3>
-<p>There is an issue when compiling CVM, discussed in this slide</p>
+<p>There is an issue needed to concern when running CVM on ARM devices.</p>
 
 
 	<div class="row">
@@ -536,7 +555,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cvm"><span class="nav-number">1.</span> <span class="nav-text">¶CVM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#build"><span class="nav-number">1.1.</span> <span class="nav-text">¶Build</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#x86-32"><span class="nav-number">1.1.1.</span> <span class="nav-text">¶x86_32</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#arm"><span class="nav-number">1.1.2.</span> <span class="nav-text">¶ARM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-test"><span class="nav-number">1.1.3.</span> <span class="nav-text">¶Run Test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reference"><span class="nav-number">1.1.4.</span> <span class="nav-text">¶Reference</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#compact-virtual-machine-cvm"><span class="nav-number">1.</span> <span class="nav-text">¶Compact Virtual Machine (CVM)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">¶Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#porting"><span class="nav-number">1.2.</span> <span class="nav-text">¶Porting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#build"><span class="nav-number">1.3.</span> <span class="nav-text">¶Build</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#x86-32"><span class="nav-number">1.3.1.</span> <span class="nav-text">¶x86_32</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#arm"><span class="nav-number">1.3.2.</span> <span class="nav-text">¶ARM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-test"><span class="nav-number">1.3.3.</span> <span class="nav-text">¶Run Test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reference"><span class="nav-number">1.3.4.</span> <span class="nav-text">¶Reference</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
