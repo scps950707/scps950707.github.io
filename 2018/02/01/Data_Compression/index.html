@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-TW">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.0.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.0.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.3" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.0.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+<meta name="description" content="¶Data Compression ¶Huffman Table ¶Concept  sort by frequency merge two smallest node until root node left  ¶Example    ¶Adaptive Huffman coding ¶Concept  Each time the tree is updated either by adding">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data Compression Note">
+<meta property="og:url" content="scps950707.github.io/2018/02/01/Data_Compression/index.html">
+<meta property="og:site_name" content="scps950707&#39;s blog">
+<meta property="og:description" content="¶Data Compression ¶Huffman Table ¶Concept  sort by frequency merge two smallest node until root node left  ¶Example    ¶Adaptive Huffman coding ¶Concept  Each time the tree is updated either by adding">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://i.imgur.com/5fTk7MR.png">
+<meta property="og:image" content="https://i.imgur.com/Wpzqs8T.png">
+<meta property="og:image" content="https://i.imgur.com/SCSUi1C.png">
+<meta property="og:image" content="http://i.imgur.com/5r3z4YA.png">
+<meta property="og:image" content="http://i.imgur.com/tn5M6N6.png">
+<meta property="og:image" content="http://i.imgur.com/DViIVg0.png">
+<meta property="og:image" content="http://i.imgur.com/ksInmzS.png">
+<meta property="og:image" content="http://i.imgur.com/WLOrsQg.png">
+<meta property="og:image" content="http://i.imgur.com/3kbfTNO.png">
+<meta property="og:image" content="http://i.imgur.com/a73icG4.png">
+<meta property="og:image" content="http://i.imgur.com/5iEpDF8.png">
+<meta property="og:image" content="http://i.imgur.com/aTduejD.png">
+<meta property="og:image" content="http://i.imgur.com/FIqjjm3.png">
+<meta property="og:image" content="http://i.imgur.com/Fn26bYo.png">
+<meta property="og:image" content="http://i.imgur.com/pMK7h6f.png">
+<meta property="og:image" content="http://i.imgur.com/77IFLXD.png">
+<meta property="og:image" content="https://i.imgur.com/kp9Owq4.png">
+<meta property="og:image" content="https://i.imgur.com/UoMWlKU.png">
+<meta property="og:image" content="https://i.imgur.com/BVxrFkH.png">
+<meta property="og:image" content="https://i.imgur.com/rYG6JO2.png">
+<meta property="og:image" content="https://i.imgur.com/PqCpDVU.png">
+<meta property="og:image" content="https://i.imgur.com/Pv39Qwa.png">
+<meta property="og:image" content="https://i.imgur.com/smMaiwy.png">
+<meta property="og:image" content="https://i.imgur.com/Jx7tBFC.png">
+<meta property="og:image" content="https://i.imgur.com/xgvPX1P.png">
+<meta property="og:image" content="https://i.imgur.com/4ZBeApt.png">
+<meta property="og:image" content="https://i.imgur.com/3UobDi9.png">
+<meta property="og:image" content="https://i.imgur.com/JwDuRl4.png">
+<meta property="og:image" content="https://i.imgur.com/49NzOD4.png">
+<meta property="og:image" content="https://i.imgur.com/3cLc8V6.png">
+<meta property="og:image" content="https://i.imgur.com/pnO9AfO.png">
+<meta property="og:image" content="https://i.imgur.com/lUUNnWT.png">
+<meta property="og:image" content="https://i.imgur.com/zoOgY3T.png">
+<meta property="og:image" content="https://i.imgur.com/55SpOkB.png">
+<meta property="og:image" content="https://i.imgur.com/td7EdS3.png">
+<meta property="og:image" content="https://i.imgur.com/DS33mo1.png">
+<meta property="og:image" content="https://i.imgur.com/ssdWTJ7.png">
+<meta property="og:image" content="https://i.imgur.com/PrzIzEe.png">
+<meta property="og:image" content="http://imgur.com/t1RNbDz.png">
+<meta property="og:image" content="http://i.imgur.com/BD3Oj5P.png">
+<meta property="og:image" content="http://i.imgur.com/g4nG391.png">
+<meta property="og:image" content="https://i.imgur.com/6SOkKvM.png">
+<meta property="og:image" content="https://i.imgur.com/IkOrRNG.png">
+<meta property="og:image" content="https://i.imgur.com/FyAepln.png">
+<meta property="og:image" content="https://i.imgur.com/p0HkLal.png">
+<meta property="og:image" content="https://i.imgur.com/SIhhcTz.png">
+<meta property="og:image" content="https://i.imgur.com/1I8x1Xq.png">
+<meta property="og:image" content="https://i.imgur.com/GDP11hy.png">
+<meta property="og:image" content="https://i.imgur.com/KWWiag0.png">
+<meta property="og:image" content="https://i.imgur.com/IPb1FsX.png">
+<meta property="og:image" content="https://i.imgur.com/gIfwhui.png">
+<meta property="og:updated_time" content="2018-02-01T08:01:25.360Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Data Compression Note">
+<meta name="twitter:description" content="¶Data Compression ¶Huffman Table ¶Concept  sort by frequency merge two smallest node until root node left  ¶Example    ¶Adaptive Huffman coding ¶Concept  Each time the tree is updated either by adding">
+<meta name="twitter:image" content="https://i.imgur.com/5fTk7MR.png">
+
+
+
+
+
+
+  <link rel="canonical" href="scps950707.github.io/2018/02/01/Data_Compression/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+  <title>Data Compression Note | scps950707's blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">scps950707's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首頁</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />歸檔</a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+  
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="scps950707.github.io/2018/02/01/Data_Compression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="scps950707">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="scps950707's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Data Compression Note</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-01T01:29:15+08:00">2018-02-01</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="data-compression"><a class="header-anchor" href="#data-compression">¶</a>Data Compression</h1>
+<h2 id="huffman-table"><a class="header-anchor" href="#huffman-table">¶</a>Huffman Table</h2>
+<h3 id="concept"><a class="header-anchor" href="#concept">¶</a>Concept</h3>
+<ol>
+<li>sort by frequency</li>
+<li>merge two smallest node until root node left</li>
+</ol>
+<h3 id="example"><a class="header-anchor" href="#example">¶</a>Example</h3>
+<p><img src="https://i.imgur.com/5fTk7MR.png" alt=""></p>
+<p><img src="https://i.imgur.com/Wpzqs8T.png" alt=""></p>
+<p><img src="https://i.imgur.com/SCSUi1C.png" alt=""></p>
+<h2 id="adaptive-huffman-coding"><a class="header-anchor" href="#adaptive-huffman-coding">¶</a>Adaptive Huffman coding</h2>
+<h3 id="concept-v2"><a class="header-anchor" href="#concept-v2">¶</a>Concept</h3>
+<ul>
+<li>Each time the tree is updated either by adding a new character or increment the frequency of occurrence of an existing character</li>
+<li>If there is a node out of order, the structure of the tree is modified by exchanging the position of this node with the other node in the tree</li>
+</ul>
+<h3 id="example-v2"><a class="header-anchor" href="#example-v2">¶</a>Example</h3>
+<p>the following example is transmitting a stream <code>This-is</code><br>
+<em>[] is empty</em></p>
+<p>init<br>
+<img src="http://i.imgur.com/5r3z4YA.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>T</td>
+<td>0&quot;T&quot;</td>
+<td>[]T1</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/tn5M6N6.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>h</td>
+<td>0&quot;h&quot;</td>
+<td>[] h1 1 T1</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/DViIVg0.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>i</td>
+<td>00&quot;i&quot;</td>
+<td>[] i1 1 h1 <strong>2 T1</strong></td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/ksInmzS.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3’</td>
+<td></td>
+<td></td>
+<td>[] i1 1 h1 T1 2</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/WLOrsQg.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>s</td>
+<td>100&quot;s&quot;</td>
+<td>[] s1 1 i1 <strong>2</strong> h1 <strong>T1</strong> 3</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+<p><em>find the rightmost node which smaller than 2 to swap</em><br>
+<img src="http://i.imgur.com/3kbfTNO.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4’</td>
+<td></td>
+<td></td>
+<td>[] s1 1 i1 T1 h1 2 2</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/a73icG4.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>-</td>
+<td>000&quot;-&quot;</td>
+<td>[] -1 1 s1 <strong>2</strong> i1 T1 <strong>h1</strong> 3 2</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/5iEpDF8.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5’</td>
+<td></td>
+<td></td>
+<td>[] -1 1 s1 h1 i1 T1 2 2 3</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/aTduejD.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>i</td>
+<td>01</td>
+<td>[] -1 1 s1 h1 <strong>i2 T1</strong> 2 3 3</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/FIqjjm3.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6’</td>
+<td></td>
+<td></td>
+<td>[] -1 1 s1 h1 T1 i2 2 2 4</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/Fn26bYo.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>s</td>
+<td>111</td>
+<td>[] -1 1 <strong>s2</strong> h1 <strong>T1</strong> i2 3 2 5</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/pMK7h6f.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>character</th>
+<th>output</th>
+<th>list</th>
+<th>in order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7’</td>
+<td></td>
+<td></td>
+<td>[] -1 1 T1 h1 s2 i2 2 3 4</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://i.imgur.com/77IFLXD.png" alt=""></p>
+<h2 id="arithmetic-coding"><a class="header-anchor" href="#arithmetic-coding">¶</a>Arithmetic coding</h2>
+<h3 id="concept-v3"><a class="header-anchor" href="#concept-v3">¶</a>Concept</h3>
+<ul>
+<li>Represent a sequence of symbols by an interval with length equal to its probability</li>
+<li>The interval is specified by its lower boundary (l), upper boundary (u) and length d (=probability)</li>
+<li>The codeword for the sequence is the common bits in binary representations of l and u</li>
+<li>A more likely sequence=a longer interval=fewer bits</li>
+<li>each symbol (n with probability p<sub>n</sub>) is located in a interval among (0,1)</li>
+<li>q<sub>n-1</sub> is the sum of probability of previous symbols</li>
+</ul>
+<h3 id="encoding-process"><a class="header-anchor" href="#encoding-process">¶</a>Encoding Process</h3>
+<ul>
+<li>
+<p>initial values l<sub>0</sub>=0 u<sub>0</sub>=1 d<sub>0</sub>=1</p>
+</li>
+<li>
+<p>For n<sup>th</sup> symbol<br>
+with q<sub>n-1</sub> and p<sub>n</sub> at l<sub>n-1</sub>,u<sub>n-1</sub>,d<sub>n-1</sub>=u<sub>n-1</sub>-l<sub>n-1</sub></p>
+<ul>
+<li>d<sub>n</sub> = d<sub>n-1</sub> * p<sub>n</sub></li>
+<li>l<sub>n</sub> = l<sub>n-1</sub> + d<sub>n-1</sub> * q<sub>n-1</sub></li>
+<li>u<sub>n</sub> = l<sub>n</sub> + d<sub>n</sub></li>
+</ul>
+</li>
+</ul>
+<h4 id="example-v3"><a class="header-anchor" href="#example-v3">¶</a>Example</h4>
+<p>p<sub>a</sub>=1/2<br>
+p<sub>b</sub>=1/4<br>
+p<sub>c</sub>=1/4</p>
+<p>q<sub>a</sub>=0<br>
+q<sub>b</sub>=p<sub>a</sub>=1/2<br>
+q<sub>c</sub>=p<sub>a</sub>+p<sub>b</sub>=3/4<br>
+For symbol stream <code>abaca</code> :</p>
+<table>
+<thead>
+<tr>
+<th>symbol</th>
+<th>q</th>
+<th>p</th>
+<th>l</th>
+<th>u</th>
+<th>d</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>a</td>
+<td>0</td>
+<td>1/2</td>
+<td>0=0+1x0</td>
+<td>1/2=0+1/2</td>
+<td>1/2=1x1/2</td>
+</tr>
+<tr>
+<td>b</td>
+<td>1/2</td>
+<td>1/4</td>
+<td>1/4=0+1/2x1/2</td>
+<td>3/8=1/4+1/8</td>
+<td>1/8=1/2x1/4</td>
+</tr>
+<tr>
+<td>a</td>
+<td>0</td>
+<td>1/2</td>
+<td>1/4=1/4+1/8x0</td>
+<td>5/16=1/4+1/16</td>
+<td>1/16=1/8x1/2</td>
+</tr>
+<tr>
+<td>c</td>
+<td>3/4</td>
+<td>1/4</td>
+<td>19/64=1/4+1/16x3/4</td>
+<td>20/64=19/64+1/64</td>
+<td>1/64=1/16x1/4</td>
+</tr>
+<tr>
+<td>a</td>
+<td>0</td>
+<td>1/2</td>
+<td>19/64=19/64+1/64x0</td>
+<td>39/128=19/64+1/128</td>
+<td>1/128=1/64x1/2</td>
+</tr>
+</tbody>
+</table>
+<p>Output = value of <strong>u</strong> =39/128=0.0100111 (binary)</p>
+<p><img src="https://i.imgur.com/kp9Owq4.png" alt=""></p>
+<h3 id="decoding-process"><a class="header-anchor" href="#decoding-process">¶</a>Decoding Process</h3>
+<ul>
+<li>with input u and symbol interval in (0,1)</li>
+<li>1.Push u into (0,1), and check which interval it is located, output the symbol own this interval.<br>
+2.u = u – low boundary of this interval<br>
+3.u = u / the range of this interval, ignore the carry<br>
+4.repeat step 1~3 till u is 0</li>
+</ul>
+<h4 id="example-v4"><a class="header-anchor" href="#example-v4">¶</a>Example</h4>
+<p>u is 0.0100111, with interval a(0,1/2], b(1/2,3/4], c(3/4,1]</p>
+<table>
+<thead>
+<tr>
+<th>u</th>
+<th>interval</th>
+<th>1/range</th>
+<th>symbol</th>
+<th>new u</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>39/128</td>
+<td>(0,1/2]</td>
+<td>2</td>
+<td>a</td>
+<td>39/64</td>
+</tr>
+<tr>
+<td>39/64</td>
+<td>(1/2,3/4]</td>
+<td>4</td>
+<td>b</td>
+<td>7/16</td>
+</tr>
+<tr>
+<td>7/16</td>
+<td>(0,1/2]</td>
+<td>2</td>
+<td>a</td>
+<td>7/8</td>
+</tr>
+<tr>
+<td>7/8</td>
+<td>(3/4,1]</td>
+<td>4</td>
+<td>c</td>
+<td>1/2</td>
+</tr>
+<tr>
+<td>1/2</td>
+<td>(0,1/2]</td>
+<td>2</td>
+<td>a</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Output:abaca</p>
+<h2 id="lzw"><a class="header-anchor" href="#lzw">¶</a>LZW</h2>
+<h3 id="property"><a class="header-anchor" href="#property">¶</a>Property</h3>
+<ul>
+<li>input:variable length output:fixed length</li>
+<li>dictionary based compression
+<ul>
+<li>winzip</li>
+<li>winarj</li>
+</ul>
+</li>
+<li>Using dictionary table that map character ( word, or character stream) to index (fixed bits)
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>New stream</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>prefix+character</td>
+</tr>
+<tr>
+<td>1</td>
+<td>prefix+character</td>
+</tr>
+<tr>
+<td>.</td>
+<td>.</td>
+</tr>
+<tr>
+<td>.</td>
+<td>.</td>
+</tr>
+<tr>
+<td>n</td>
+<td>prefix+character</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>length of index, which dependent the size of dictionary, is the output of encoding</li>
+</ul>
+<h3 id="encoding-process-v2"><a class="header-anchor" href="#encoding-process-v2">¶</a>Encoding Process</h3>
+<ol>
+<li>Define the size of DIC (dictionary) with 12 or 16 bits. Here is 12bits example</li>
+<li>Initialize the dictionary with the first 128 ASCII code, 000~07f</li>
+<li>(1)Set NS (new stream) as empty<br>
+(2)Input NC (new character) check if NS+NC is in dictionary
+<ul>
+<li>yes, NS=NS+NC, repeat (2)</li>
+<li>No, output the index of NS in dictionary append NS+NC into dictionary as new word NS=NC, repeat (2) till end of file (input)</li>
+</ul>
+</li>
+</ol>
+<h4 id="example-v5"><a class="header-anchor" href="#example-v5">¶</a>Example</h4>
+<p>A dictionary with root characters <code>ABCD</code>, encode <code>ABCABCDABCABCAD</code> Initial dictionary with 12 bits Dictionary<br>
+&lt;000&gt; = “?”<br>
+…<br>
+&lt;041&gt; = “A”<br>
+&lt;042&gt; = “B”<br>
+&lt;043&gt; = “C”<br>
+&lt;044&gt; = “D”<br>
+…<br>
+&lt;07f&gt;  = “?”</p>
+<table>
+<thead>
+<tr>
+<th>Input   (NC)</th>
+<th>dictionary</th>
+<th>new   stream</th>
+<th>output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>[ ]</td>
+<td></td>
+</tr>
+<tr>
+<td>A</td>
+<td>ASCII   code</td>
+<td>[A]</td>
+<td></td>
+</tr>
+<tr>
+<td>B</td>
+<td>AB&gt;&gt;080</td>
+<td>[B]</td>
+<td>041,   A</td>
+</tr>
+<tr>
+<td>C</td>
+<td>BC&gt;&gt;081</td>
+<td>[C]</td>
+<td>042,   B</td>
+</tr>
+<tr>
+<td>A</td>
+<td>CA&gt;&gt;082</td>
+<td>[A]</td>
+<td>043,   C</td>
+</tr>
+<tr>
+<td>B</td>
+<td></td>
+<td>[AB]</td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td>ABC&gt;&gt;083</td>
+<td>[C]</td>
+<td>080,   AB</td>
+</tr>
+<tr>
+<td>D</td>
+<td>CD&gt;&gt;084</td>
+<td>[D]</td>
+<td>043,   C</td>
+</tr>
+<tr>
+<td>A</td>
+<td>DA&gt;&gt;085</td>
+<td>[A]</td>
+<td>044,   D</td>
+</tr>
+<tr>
+<td>B</td>
+<td></td>
+<td>[AB]</td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td></td>
+<td>[ABC]</td>
+<td></td>
+</tr>
+<tr>
+<td>A</td>
+<td>ABCA&gt;&gt;086</td>
+<td>[A]</td>
+<td>083,   ABC</td>
+</tr>
+<tr>
+<td>B</td>
+<td></td>
+<td>[AB]</td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td></td>
+<td>[ABC]</td>
+<td></td>
+</tr>
+<tr>
+<td>A</td>
+<td></td>
+<td>[ABCA]</td>
+<td></td>
+</tr>
+<tr>
+<td>D</td>
+<td>ABCAD&gt;&gt;087</td>
+<td>[D]</td>
+<td>086,   ABCA</td>
+</tr>
+<tr>
+<td>End   of file</td>
+<td></td>
+<td></td>
+<td>044,   D</td>
+</tr>
+</tbody>
+</table>
+<h3 id="decoding-process-v2"><a class="header-anchor" href="#decoding-process-v2">¶</a>Decoding Process</h3>
+<p><em>NC: new code, NW: new word in dictionary</em></p>
+<ol>
+<li>Input first NC, NW=NC, output character of NC</li>
+<li>Input NC Check NC, if NC is in dictionary?
+<ul>
+<li>Yes, set NW=NW+ first character in NC</li>
+<li>No. set NW=NW+ first character in NW</li>
+</ul>
+</li>
+<li>Put NW into dictionary as new word, NW=NC</li>
+<li>Output the character stream of NC Is not EOF?, yes, repeat 1;otherwise, end decoding</li>
+</ol>
+<h4 id="example-v6"><a class="header-anchor" href="#example-v6">¶</a>Example</h4>
+<table>
+<thead>
+<tr>
+<th>Input   code</th>
+<th>New   word</th>
+<th>dictionary</th>
+<th>Output   stream</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>ASCII   code</td>
+<td></td>
+</tr>
+<tr>
+<td>041</td>
+<td></td>
+<td></td>
+<td>A</td>
+</tr>
+<tr>
+<td>042</td>
+<td>041+042</td>
+<td>AB&gt;&gt;080</td>
+<td>B</td>
+</tr>
+<tr>
+<td>043</td>
+<td>042+043</td>
+<td>BC&gt;&gt;081</td>
+<td>C</td>
+</tr>
+<tr>
+<td>080</td>
+<td>043+080</td>
+<td>CA&gt;&gt;082</td>
+<td>AB</td>
+</tr>
+<tr>
+<td>043</td>
+<td>080+043</td>
+<td>ABC&gt;&gt;083</td>
+<td>C</td>
+</tr>
+<tr>
+<td>044</td>
+<td>043+044</td>
+<td>CD&gt;&gt;084</td>
+<td>D</td>
+</tr>
+<tr>
+<td>083</td>
+<td>044+083</td>
+<td>DA&gt;&gt;085</td>
+<td>ABC</td>
+</tr>
+<tr>
+<td>086</td>
+<td>083+086</td>
+<td>ABCA&gt;&gt;086</td>
+<td>ABCA</td>
+</tr>
+<tr>
+<td>044</td>
+<td>086+044</td>
+<td>ABCAD&gt;&gt;087</td>
+<td>D</td>
+</tr>
+<tr>
+<td>End   of file</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="sound"><a class="header-anchor" href="#sound">¶</a>Sound</h2>
+<h3 id="waveform-coding"><a class="header-anchor" href="#waveform-coding">¶</a>Waveform coding</h3>
+<ul>
+<li>Sample and code</li>
+<li>High-quality and not complex</li>
+<li>Large amount of bandwidth</li>
+</ul>
+<h4 id="pcm-pulse-code-modulation"><a class="header-anchor" href="#pcm-pulse-code-modulation">¶</a>PCM(Pulse-code modulation)</h4>
+<ul>
+<li>A method used to digitally represent sampled analog signals. It is the standard form of digital audio in computers, compact discs, digital telephony and other digital audio applications</li>
+<li>Not really a compression technique</li>
+</ul>
+<p><img src="https://i.imgur.com/UoMWlKU.png" alt=""></p>
+<h4 id="dpcm-differential-pcm"><a class="header-anchor" href="#dpcm-differential-pcm">¶</a>DPCM(Differential PCM)</h4>
+<ul>
+<li>Only transmit the difference between the predicated value and the actual value</li>
+<li>It is possible to predict the value of a sample base on the values of previous samples</li>
+<li>The receiver perform the same prediction</li>
+<li>No algorithmic delay</li>
+<li>EX: Voice changes relatively slowly</li>
+<li>Take PCM sequence <code>250 268 269 241</code> for example, by using DPCM to improve, we can store the sequence into <code>250 +18 +19 -9</code> to save more space but doesn’t change the data, so DPCM is <strong>Lossless Compression</strong>.<br>
+<img src="https://i.imgur.com/BVxrFkH.png" alt=""></li>
+</ul>
+<h4 id="adpcm-adaptive-differential-pcm"><a class="header-anchor" href="#adpcm-adaptive-differential-pcm">¶</a>ADPCM(Adaptive Differential PCM)</h4>
+<ul>
+<li>Quantization level varies with local signal level</li>
+<li>locally estimated standard deviation</li>
+<li>From the example <code>250 +18 +19 -9</code> above,by using ADPCM, the sequence can be simplified as <code>250 (+9,+9,-4)x2</code> to save more space.But when decoding:<code>(+9,+9,-4)x2=250, +18 +18 -8</code>,the data is different from original source, so DPCM is <strong>Lossy Compression</strong>.</li>
+</ul>
+<h3 id="source-coding"><a class="header-anchor" href="#source-coding">¶</a>Source coding</h3>
+<ul>
+<li>Based on a model of how the human voice is produced</li>
+<li>The waveform is discarded and parameters describing the characteristics of the sounds produced are transmitted instead. (Linear Predictive Coding)</li>
+<li>The synthesised voice tends to be rather artificial</li>
+<li>Generic models are used to reproduce vowels (vibrations of the vocal chords) and consonants (produced by shaping the mouth).</li>
+<li>Vocal Tract Model(不用記)</li>
+</ul>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>G</mi><mo>(</mo><mi>z</mi><mo>)</mo><mo>=</mo><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mo>−</mo><msubsup><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>P</mi></msubsup><msub><mi>a</mi><mi>k</mi></msub><msup><mi>Z</mi><mrow><mo>−</mo><mi>k</mi></mrow></msup></mrow></mfrac></mrow></mrow><annotation encoding="application/x-tex">G(z)={1 \over 1-\sum_{k=1}^Pa_kZ^{-k}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.32144em;"></span><span class="strut bottom" style="height:2.3537809999999997em;vertical-align:-1.032341em;"></span><span class="base displaystyle textstyle uncramped"><span class="mord mathit">G</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord displaystyle textstyle uncramped"><span class="mord reset-textstyle displaystyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.732331em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle cramped"><span class="mord textstyle cramped"><span class="mord mathrm">1</span><span class="mbin">−</span><span class="mop"><span class="op-symbol small-op mop" style="top:-0.0000050000000000050004em;">∑</span><span class="vlist"><span style="top:0.30001em;margin-left:0em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mrel">=</span><span class="mord mathrm">1</span></span></span></span><span style="top:-0.364em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord"><span class="mord mathit">a</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit" style="margin-right:0.03148em;">k</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord"><span class="mord mathit" style="margin-right:0.07153em;">Z</span><span class="vlist"><span style="top:-0.289em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord">−</span><span class="mord mathit" style="margin-right:0.03148em;">k</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.677em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span></span></span></p>
+<p><em>a<sub>k</sub> : LPC coefficients</em></p>
+<h4 id="lpc-linear-prediction"><a class="header-anchor" href="#lpc-linear-prediction">¶</a>LPC(Linear Prediction)</h4>
+<p>Linear prediction is at the base of many speech coding techniques, including CELP. The idea behind it is to predict the signal using a linear combination of its past samples</p>
+<h4 id="celp-code-excited-linear-prediction"><a class="header-anchor" href="#celp-code-excited-linear-prediction">¶</a>CELP(Code-excited linear prediction)<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></h4>
+<div class="info">
+<p><strong>Vocal cords</strong> are the source of spectrally flat sound (the excitation signal)</p>
+</div>
+<div class="info">
+<p><strong>Vocal tract</strong> acts as a filter to spectrally shape the excitation signal into various sounds.</p>
+</div>
+<ul>
+<li>Use LPC to model the vocal tract</li>
+<li>Use Pitch Prediction: during voiced segments, the speech signal is periodic, so it is possible to take advantage of that property by approximating the excitation signal by a gain times the past of the excitation</li>
+<li>Use adaptive and fixed codebook entries as input (excitation) of the LP model</li>
+<li>The search performed in closed-loop in a “perceptually weighted domain”</li>
+<li>Analysis-by-Synthesis<br>
+The encoding (analysis) is performed by perceptually optimising the decoded (synthesis) signal in a closed loop. In theory, the best CELP stream would be produced by trying all possible bit combinations and selecting the one that produces the best-sounding decoded signal.</li>
+</ul>
+<p><img src="https://i.imgur.com/rYG6JO2.png" alt=""></p>
+<h2 id="mp3"><a class="header-anchor" href="#mp3">¶</a>MP3</h2>
+<h3 id="absolute-threshold-of-hearing"><a class="header-anchor" href="#absolute-threshold-of-hearing">¶</a>Absolute threshold of hearing</h3>
+<ul>
+<li>is the minimum sound level of a pure tone that an average human ear with normal hearing can hear with no other sound present<br>
+<img src="https://i.imgur.com/PqCpDVU.png" alt=""></li>
+</ul>
+<h3 id="simultaneous-masking"><a class="header-anchor" href="#simultaneous-masking">¶</a>Simultaneous masking</h3>
+<p>occurs when a sound is made inaudible by a noise or unwanted sound of the same duration as the original sound.For example, a powerful spike at 1 kHz will tend to mask out a lower-level tone at 1.1 kHz.<br>
+<img src="https://i.imgur.com/Pv39Qwa.png" alt=""></p>
+<h3 id="temporal-masking"><a class="header-anchor" href="#temporal-masking">¶</a>Temporal Masking</h3>
+<p>occurs when a sudden stimulus sound makes inaudible other sounds which are present immediately preceding or following the stimulus<br>
+<img src="https://i.imgur.com/smMaiwy.png" alt=""></p>
+<div class="info">
+<p>MP3 is based on the strength of the audio signal to achieve masking effect, thereby reducing the signal redundancy, to achieve the effect of compression</p>
+</div>
+<h2 id="run-length-coding"><a class="header-anchor" href="#run-length-coding">¶</a>Run-length coding</h2>
+<ul>
+<li>lossless data compression</li>
+<li><em>runs</em> of data (that is, sequences in which the same data value occurs in many consecutive data elements) are stored as a single data value and count</li>
+<li>most useful on data that contains many such runs, and vice versa</li>
+</ul>
+<h3 id="example-v7"><a class="header-anchor" href="#example-v7">¶</a>Example</h3>
+<p><code>WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW</code><br>
+encode to<br>
+<code>12W1B12W3B24W1B14W</code></p>
+<ul>
+<li>When using for compressing binary image, it can be combined with huffman table</li>
+</ul>
+<p><img src="https://i.imgur.com/Jx7tBFC.png" alt=""><br>
+<img src="https://i.imgur.com/xgvPX1P.png" alt=""><br>
+<img src="https://i.imgur.com/4ZBeApt.png" alt=""></p>
+<h2 id="read-coding"><a class="header-anchor" href="#read-coding">¶</a>READ coding</h2>
+<ul>
+<li>Relative Element Address Designate coding</li>
+<li>Code the location of run boundary relative to the previous row.<br>
+<img src="https://i.imgur.com/3UobDi9.png" alt=""></li>
+</ul>
+<h3 id="pass-mode"><a class="header-anchor" href="#pass-mode">¶</a>Pass mode</h3>
+<ul>
+<li>Condition: (b 1 b 2 ) is to the left of (a 1 a 2 ) and b 2 is strictly to the left of a 1</li>
+<li>Run encoded: (b 1 b 2 )</li>
+<li>Codeword §: 0001 + coded length of (b 1 b 2 )</li>
+<li>Update: a 0 = b 2 &amp; the rest according to definitions</li>
+<li><img src="https://i.imgur.com/JwDuRl4.png" alt=""></li>
+</ul>
+<h3 id="horizontal-mode"><a class="header-anchor" href="#horizontal-mode">¶</a>Horizontal mode</h3>
+<ul>
+<li>Condition: (b 1 b 2 ) overlaps (a 1 a 2 ) by more than 3 pels as determined by |a 1 -b 1 |</li>
+<li>Runs encoded: (a 0 a 1 ), (a 1 a 2 )</li>
+<li>Codeword (H): 001 + coded lengths of (a 0 a 1 ), (a 1 a 2 )</li>
+<li>Update: a 0 = a 2 &amp; the rest according to definitions</li>
+<li><img src="https://i.imgur.com/49NzOD4.png" alt=""></li>
+</ul>
+<h3 id="vertical-mode"><a class="header-anchor" href="#vertical-mode">¶</a>Vertical mode</h3>
+<ul>
+<li>Condition: (b 1 b 2 ) overlaps (a 1 a 2 ) by no more than 3 pels</li>
+<li>Expected as most common (assuming small differences)</li>
+<li>Run encoded: (a 1 b 1 )</li>
+<li>Codeword:
+<ul>
+<li>-3/-2/-1/0/1/2/3 → VR(3)/VR(2)/VR(1)/V(0)/VL(1)/VL(2)/VL(3)</li>
+<li>1/000001/00001/011/1/010/000010/0000010</li>
+</ul>
+</li>
+<li>Update: a 0 = a 1 &amp; the rest according to definitions</li>
+<li><img src="https://i.imgur.com/3cLc8V6.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/pnO9AfO.png" alt=""></p>
+<h2 id="jpeg"><a class="header-anchor" href="#jpeg">¶</a>JPEG</h2>
+<ol>
+<li>Transform RGB to YUV,  U and V down-sample 2x2.<br>
+<img src="https://i.imgur.com/lUUNnWT.png" alt=""></li>
+<li>Blocking YUV into 8x8 blocks.Encoding blocks from right to left , top to down, Y, U and V in every block<br>
+<img src="https://i.imgur.com/zoOgY3T.png" alt=""></li>
+<li>DCT transform into frequency domain.<br>
+<img src="https://i.imgur.com/55SpOkB.png" alt=""></li>
+<li>Quantize the DCT coefficients with default quantization table.</li>
+</ol>
+<ul>
+<li>Different weighting matrices are standardized, adapted to human visual contrast sensitivity.</li>
+<li>DC coefficient is coded with DPCM using previous block’s DC as predictor,  then quantized.<br>
+<img src="https://i.imgur.com/td7EdS3.png" alt=""></li>
+</ul>
+<ol start="5">
+<li>Run length coding as run length symbol with zig-zag order from DC to maximal freqency. EOB is the last symbol. Run length symbol (R,A) = ( zero count, non-zero value ).<br>
+<img src="https://i.imgur.com/DS33mo1.png" alt=""><br>
+<img src="https://i.imgur.com/ssdWTJ7.png" alt=""></li>
+<li>Entropy coding the run length symbols<br>
+<img src="https://i.imgur.com/PrzIzEe.png" alt=""></li>
+<li>Use Huffman coding to compress data from entropy coding</li>
+</ol>
+<h2 id="jpeg2000"><a class="header-anchor" href="#jpeg2000">¶</a>JPEG2000</h2>
+<h3 id="why-need-jpeg2000"><a class="header-anchor" href="#why-need-jpeg2000">¶</a>Why need JPEG2000</h3>
+<ul>
+<li>For the users with different request in image quality or transmit bandwidth. In JPEG, many versions are coded and transmitted.</li>
+<li>For the users that are interested only one part in an image. (range of interest ROI)</li>
+<li>For the JPEG file with one part error.</li>
+<li>Scalable from lossless to high compressed in one compressed file.</li>
+<li>In order to address areas that the current standards fail to produce the quality or performance, as for example:
+<ul>
+<li>Low bit-rate compression: For example below 0.25bpp</li>
+<li>Lossless and lossy compression: No current standard exists that can provide superiror lossy and lossless compression in a single codestream.</li>
+<li>Computer generated imagery: JPEG was optimized for natural imagery and does not perform well on computer generated imagery.</li>
+<li>Transmission in noisy environments: The current JPEG standard has provision for restart intervals, but image quality suffers dramatically when bit errors are encountered.</li>
+<li>Compound documents: Currentyly, JPEG is seldom used in the compression of compound documents because of its poor perfornamce when applied to bi-level(text) imagery.</li>
+<li>Open architecture</li>
+<li>Progressive transmission by pixel accuracy and resolution</li>
+</ul>
+</li>
+</ul>
+<h3 id="difference-between-jpeg"><a class="header-anchor" href="#difference-between-jpeg">¶</a>Difference between JPEG</h3>
+<ul>
+<li>New fuctionalities
+<ul>
+<li>Region Of Interest</li>
+<li>Error resilience</li>
+<li>Progression orders</li>
+</ul>
+</li>
+<li>Lossy to lossless in one system</li>
+<li>Better compression at low bit-rates</li>
+<li>Better at compound images and graphics</li>
+</ul>
+<h3 id="codec"><a class="header-anchor" href="#codec">¶</a>Codec</h3>
+<p><img src="http://imgur.com/t1RNbDz.png" alt=""></p>
+<h3 id="image-coding-system"><a class="header-anchor" href="#image-coding-system">¶</a>Image Coding System</h3>
+<p><img src="http://i.imgur.com/BD3Oj5P.png" alt=""><br>
+<img src="http://i.imgur.com/g4nG391.png" alt=""></p>
+<h2 id="mpeg"><a class="header-anchor" href="#mpeg">¶</a>MPEG</h2>
+<ul>
+<li>Audio/video on CD-ROM</li>
+<li>Prompted explosion of digital video applications: MPEG1 video CD and downloadable video over Internet</li>
+<li>MPEG-1 Audio
+<ul>
+<li>Offers 3 coding options (3 layers), higher layer have higher coding efficiency with more computations</li>
+<li>MP3 = MPEG1 layer 3 audio</li>
+</ul>
+</li>
+</ul>
+<h3 id="frame"><a class="header-anchor" href="#frame">¶</a>Frame</h3>
+<p><img src="https://i.imgur.com/6SOkKvM.png" alt=""></p>
+<ul>
+<li>I-frames
+<ul>
+<li>No temporal redundacy reduction</li>
+<li>Has the highest bit count</li>
+<li>For random access, FF, REW features</li>
+</ul>
+</li>
+<li>P-frames
+<ul>
+<li>Forward motion-compensated prediction</li>
+</ul>
+</li>
+<li>B-frames
+<ul>
+<li>Both forward and backward motion-compensated prediction</li>
+<li>Usually results in the lowest bit count</li>
+<li>Increase delay</li>
+</ul>
+</li>
+</ul>
+<h3 id="prediction-mode"><a class="header-anchor" href="#prediction-mode">¶</a>Prediction Mode</h3>
+<p>In P frame, the macro-block (2x2 blocks) is estimated that may move from M-block in previous frame (I or Previous P), the displacement of M-blocks between previous one and current one is the Motion Vector (MVx, MVy), the current M-B will be replaced (predicted) by the previous one, and the difference will be coded with JPEG ( Motion Compensation).<br>
+<img src="https://i.imgur.com/IkOrRNG.png" alt=""></p>
+<h3 id="bi-direction-mode"><a class="header-anchor" href="#bi-direction-mode">¶</a>Bi-direction Mode</h3>
+<p>In B frame, the M-B will be forward estimated from previous I or P frame with forward motion vector (MVfx,MVfy), and backward estimated from the following P frame with the backward motion vector (MVbx,MVby). The pixel value in B frame will be predicted by the respected pixels in previous frame and following frame with interpolation method.</p>
+<h3 id="motion-estimation"><a class="header-anchor" href="#motion-estimation">¶</a>Motion Estimation</h3>
+<p>To estimate the macro-block in current frame ( P frame ) is moved from a macro-block on the previous frame ( I or P frame ) in the search area ( searching window ).</p>
+<ul>
+<li>Searching window : the area cover ± 7 (± 15) pixels centroid on the place of current macro-block.</li>
+<li>Motion Estimation : to find the best match M-block which embedded minimal MSE with the current M-block.</li>
+<li>Motion Vector : the distance between best match M-blocks and current M-blocks. MV( ± 7, ± 7 ) or MV( ± 15, ± 15 ).</li>
+<li>Motion Compensation : the difference between the current M-block and the best match M-block are coded by JPEG for compensating in the decoding process.</li>
+</ul>
+<h2 id="mpeg-2"><a class="header-anchor" href="#mpeg-2">¶</a>MPEG-2<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></h2>
+<ul>
+<li>A/V broadcast (TV, HDTV, Terrestrial, Cable, Satellite, High Speed Inter/Intranet) as well as DVD video</li>
+<li>MPEG-2 Audio
+<ul>
+<li>Support 5.1 channel</li>
+<li>MPEG2 AAC: requires 30% fewer bits than MPEG1 layer 3</li>
+</ul>
+</li>
+<li>Different DCT modes and scanning methods are developed for interlaced sequences.<br>
+<img src="https://i.imgur.com/FyAepln.png" alt=""></li>
+<li>Data partition
+<ul>
+<li>All headers, MVs, first few DCT coefficients in the base layer</li>
+<li>Can be implemented at the bit stream level</li>
+<li>Simple</li>
+</ul>
+</li>
+<li>SNR scalability
+<ul>
+<li>Base layer includes coarsely quantized DCT coefficients</li>
+<li>Enhancement layer further quantizes the base layer quantization error</li>
+</ul>
+</li>
+<li>Temporal scalability</li>
+<li>Spatial scalability<br>
+<img src="https://i.imgur.com/p0HkLal.png" alt=""><br>
+MPEG-2 encodes video into double layer:Base layer and Enhancement layer. Base layer has higher transmission priority than enhancement layer, when receiver receive two layer’s data, base layer can be encoded individually to provide basic video quality.Enhancement layer provides some important data to combine with base layer to provide better video quality, so when some loss occurs to enhancement layer will not affect the video quality too much.</li>
+</ul>
+<h2 id="mpeg-4"><a class="header-anchor" href="#mpeg-4">¶</a>MPEG-4</h2>
+<ul>
+<li>Functionalities beyond MPEG-1/2
+<ul>
+<li>Interaction with individual objects</li>
+</ul>
+</li>
+<li>The displayed scene can be composed by the receiver from coded objects
+<ul>
+<li>Scalability of contents</li>
+<li>Error resilience</li>
+<li>Coding of both natural and synthetic audio and video</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/SIhhcTz.png" alt=""></p>
+<h3 id="object-based-coding"><a class="header-anchor" href="#object-based-coding">¶</a>Object-Based Coding</h3>
+<ul>
+<li>Entire scene is decomposed into multiple objects</li>
+<li>Each object is specified by its shape, motion, and texture (color)
+<ul>
+<li>Shape and texture both changes in time (specified by motion)</li>
+</ul>
+</li>
+<li>MPEG-4 assumes the encoder has a segmentation map available, specifies how to code (actually decode!) shape, motion and texture<br>
+<img src="https://i.imgur.com/1I8x1Xq.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/GDP11hy.png" alt=""></p>
+<h2 id="h264"><a class="header-anchor" href="#h264">¶</a>H264</h2>
+<h3 id="applications"><a class="header-anchor" href="#applications">¶</a>Applications</h3>
+<ul>
+<li>It is aimed at very low bit rate, real-time</li>
+<li>low end-to-end delay, and mobile applications such as conversational services and Internet video</li>
+<li>Enhanced visual quality at very low bit rates andparticularly at rate below 24kb/s</li>
+</ul>
+<h3 id="common-technical-elements-with-other-standards"><a class="header-anchor" href="#common-technical-elements-with-other-standards">¶</a>Common Technical Elements with other Standards</h3>
+<ul>
+<li>16x16 macroblocks</li>
+<li>Conventional 4:2:0 sampling of chrominance and association of luminance and chrominance data (note 4:2:2 and 4:4:4 being planned for future revision)</li>
+<li>Block motion displacement</li>
+<li>Motion vectors over picture boundaries</li>
+<li>Variable block-size motion compensation</li>
+<li>Block transforms</li>
+<li>Scalar quantization</li>
+<li>I, P and B picture types</li>
+</ul>
+<h3 id="new-features-of-h-264"><a class="header-anchor" href="#new-features-of-h-264">¶</a>New Features of H.264</h3>
+<ul>
+<li>Variable block-sized motion compensation with small block size</li>
+<li>Multi-mode, multi-reference motion compensated</li>
+<li>Motion vector can point out of image border</li>
+<li>1/4-, 1/8-pixel motion vector precision</li>
+<li>B-frame prediction weighting</li>
+<li>4x4 integer DCT transform</li>
+<li>Multi-mode intra-prediction</li>
+<li>In-loop de-blocking filter</li>
+<li>UVLC (Uniform Variable Length Coding)</li>
+<li>SP-slices</li>
+</ul>
+<h2 id="channel-coding"><a class="header-anchor" href="#channel-coding">¶</a>Channel coding</h2>
+<h3 id="linear-block-code"><a class="header-anchor" href="#linear-block-code">¶</a>Linear Block code</h3>
+<p>Assume the original data has k bits, plus n-k bits of parity check bits, the Code Rate R = k/n, when the data length and parity check bits length have linear relationship, it is called linear block code.</p>
+<h3 id="cyclic-code"><a class="header-anchor" href="#cyclic-code">¶</a>cyclic code</h3>
+<p>指說一段長度為n bits的編碼，本身屬於finite field(GF field)，經過循環位移(如圖)後，仍然屬於GF field，這樣的結構性質可以運用在錯誤控制編碼。<br>
+<img src="https://i.imgur.com/KWWiag0.png" alt=""></p>
+<h3 id="rs-code"><a class="header-anchor" href="#rs-code">¶</a>RS code</h3>
+<p>透過GF field來進行，以GF(8)為例p(x)=x^3+x+1 本質元素 滿足α^3+α+1=0 and a^7=1<br>
+GF(8)總共有8個元素，可以以指數和多項式型態來表示，運用於錯誤控制碼 過程太複雜，在此不敘述<br>
+<img src="https://i.imgur.com/IPb1FsX.png" alt=""></p>
+<h3 id="circ-cross-interleaved-reed-solomon-code-coding"><a class="header-anchor" href="#circ-cross-interleaved-reed-solomon-code-coding">¶</a>CIRC(cross-interleaved Reed–Solomon code) coding</h3>
+<p>Codecs used by CD drives, including two Reed–Solomon Codes, (32,28) and (28,24) respectively, each symbol 8 bytes, the first one (32,28), so redundancy is 4 bits, which can correct two error, and so does (28,24), and use special technique called cross interleaving to combine them。32 bits And there is total (28/32)x(24/28)=75% contains data. The advantage is that there isn’t too many errors it can be corrected directly.If there is too many errors it can detect and create repaired audio by interpolation method.<br>
+With errror control code, if there are small scratches, dust and fingerprints on CD and still in range of repair ability, then the audio sounds no differene.</p>
+<h2 id="watermarking"><a class="header-anchor" href="#watermarking">¶</a>Watermarking</h2>
+<ul>
+<li>Robustness：A digital watermark is called robust if it resists a designated class of transformations. Robust watermarks may be used in copy protection applications to carry copy and no access control information.</li>
+<li>Perceptibility：A digital watermark is called imperceptible if the original cover signal and the marked signal are perceptually indistinguishable<br>
+<img src="https://i.imgur.com/gIfwhui.png" alt=""></li>
+</ul>
+<h2 id="refs"><a class="header-anchor" href="#refs">¶</a>Refs</h2>
+<p><sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup><br>
+<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://speex.org/docs/manual/speex-manual/node9.html" target="_blank" rel="noopener">Introduction to CELP Coding</a> <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="http://what-when-how.com/voip-protocols/codetopic-excited-linear-predictive-celp-coders-voip-protocols/" target="_blank" rel="noopener">Codetopic-excited linear predictive (CELP) coders (VoIP Protocols)</a> <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="http://www.csie.ntu.edu.tw/~r95162/1.pdf" target="_blank" rel="noopener">CELP語音編碼器框架遺失訊號重整之研究</a> <a href="#fnref3" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><a href="http://vaplab.ee.ncu.edu.tw/~cfwang/4.html" target="_blank" rel="noopener">MPEG-2原理</a> <a href="#fnref4" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p><a href="http://vaplab.ee.ncu.edu.tw/~cfwang/4.html" target="_blank" rel="noopener">Magnitude, real and phase images</a> <a href="#fnref5" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p><a href="https://dsp.stackexchange.com/a/1110" target="_blank" rel="noopener">FFT of image data: “mirroring” to avoid boundary effects</a> <a href="#fnref6" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/01/cvm/" rel="next" title="C virtual machine">
+                <i class="fa fa-chevron-left"></i> C virtual machine
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/01/os/" rel="prev" title="Operating System Note">
+                Operating System Note <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概要
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">scps950707</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">文章</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/scps950707" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:scps950707@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/scps950707" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#data-compression"><span class="nav-number">1.</span> <span class="nav-text">¶Data Compression</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#huffman-table"><span class="nav-number">1.1.</span> <span class="nav-text">¶Huffman Table</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#concept"><span class="nav-number">1.1.1.</span> <span class="nav-text">¶Concept</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#example"><span class="nav-number">1.1.2.</span> <span class="nav-text">¶Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adaptive-huffman-coding"><span class="nav-number">1.2.</span> <span class="nav-text">¶Adaptive Huffman coding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#concept-v2"><span class="nav-number">1.2.1.</span> <span class="nav-text">¶Concept</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#example-v2"><span class="nav-number">1.2.2.</span> <span class="nav-text">¶Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#arithmetic-coding"><span class="nav-number">1.3.</span> <span class="nav-text">¶Arithmetic coding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#concept-v3"><span class="nav-number">1.3.1.</span> <span class="nav-text">¶Concept</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#encoding-process"><span class="nav-number">1.3.2.</span> <span class="nav-text">¶Encoding Process</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#example-v3"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">¶Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#decoding-process"><span class="nav-number">1.3.3.</span> <span class="nav-text">¶Decoding Process</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#example-v4"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">¶Example</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lzw"><span class="nav-number">1.4.</span> <span class="nav-text">¶LZW</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#property"><span class="nav-number">1.4.1.</span> <span class="nav-text">¶Property</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#encoding-process-v2"><span class="nav-number">1.4.2.</span> <span class="nav-text">¶Encoding Process</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#example-v5"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">¶Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#decoding-process-v2"><span class="nav-number">1.4.3.</span> <span class="nav-text">¶Decoding Process</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#example-v6"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">¶Example</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sound"><span class="nav-number">1.5.</span> <span class="nav-text">¶Sound</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#waveform-coding"><span class="nav-number">1.5.1.</span> <span class="nav-text">¶Waveform coding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pcm-pulse-code-modulation"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">¶PCM(Pulse-code modulation)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dpcm-differential-pcm"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">¶DPCM(Differential PCM)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#adpcm-adaptive-differential-pcm"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">¶ADPCM(Adaptive Differential PCM)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#source-coding"><span class="nav-number">1.5.2.</span> <span class="nav-text">¶Source coding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lpc-linear-prediction"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">¶LPC(Linear Prediction)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#celp-code-excited-linear-prediction"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">¶CELP(Code-excited linear prediction)[1][2][3]</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mp3"><span class="nav-number">1.6.</span> <span class="nav-text">¶MP3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#absolute-threshold-of-hearing"><span class="nav-number">1.6.1.</span> <span class="nav-text">¶Absolute threshold of hearing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#simultaneous-masking"><span class="nav-number">1.6.2.</span> <span class="nav-text">¶Simultaneous masking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#temporal-masking"><span class="nav-number">1.6.3.</span> <span class="nav-text">¶Temporal Masking</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#run-length-coding"><span class="nav-number">1.7.</span> <span class="nav-text">¶Run-length coding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#example-v7"><span class="nav-number">1.7.1.</span> <span class="nav-text">¶Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#read-coding"><span class="nav-number">1.8.</span> <span class="nav-text">¶READ coding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pass-mode"><span class="nav-number">1.8.1.</span> <span class="nav-text">¶Pass mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#horizontal-mode"><span class="nav-number">1.8.2.</span> <span class="nav-text">¶Horizontal mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vertical-mode"><span class="nav-number">1.8.3.</span> <span class="nav-text">¶Vertical mode</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jpeg"><span class="nav-number">1.9.</span> <span class="nav-text">¶JPEG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jpeg2000"><span class="nav-number">1.10.</span> <span class="nav-text">¶JPEG2000</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#why-need-jpeg2000"><span class="nav-number">1.10.1.</span> <span class="nav-text">¶Why need JPEG2000</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#difference-between-jpeg"><span class="nav-number">1.10.2.</span> <span class="nav-text">¶Difference between JPEG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#codec"><span class="nav-number">1.10.3.</span> <span class="nav-text">¶Codec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#image-coding-system"><span class="nav-number">1.10.4.</span> <span class="nav-text">¶Image Coding System</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mpeg"><span class="nav-number">1.11.</span> <span class="nav-text">¶MPEG</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#frame"><span class="nav-number">1.11.1.</span> <span class="nav-text">¶Frame</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prediction-mode"><span class="nav-number">1.11.2.</span> <span class="nav-text">¶Prediction Mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bi-direction-mode"><span class="nav-number">1.11.3.</span> <span class="nav-text">¶Bi-direction Mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#motion-estimation"><span class="nav-number">1.11.4.</span> <span class="nav-text">¶Motion Estimation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mpeg-2"><span class="nav-number">1.12.</span> <span class="nav-text">¶MPEG-2[4]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mpeg-4"><span class="nav-number">1.13.</span> <span class="nav-text">¶MPEG-4</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#object-based-coding"><span class="nav-number">1.13.1.</span> <span class="nav-text">¶Object-Based Coding</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#h264"><span class="nav-number">1.14.</span> <span class="nav-text">¶H264</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#applications"><span class="nav-number">1.14.1.</span> <span class="nav-text">¶Applications</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#common-technical-elements-with-other-standards"><span class="nav-number">1.14.2.</span> <span class="nav-text">¶Common Technical Elements with other Standards</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#new-features-of-h-264"><span class="nav-number">1.14.3.</span> <span class="nav-text">¶New Features of H.264</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#channel-coding"><span class="nav-number">1.15.</span> <span class="nav-text">¶Channel coding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linear-block-code"><span class="nav-number">1.15.1.</span> <span class="nav-text">¶Linear Block code</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cyclic-code"><span class="nav-number">1.15.2.</span> <span class="nav-text">¶cyclic code</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rs-code"><span class="nav-number">1.15.3.</span> <span class="nav-text">¶RS code</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#circ-cross-interleaved-reed-solomon-code-coding"><span class="nav-number">1.15.4.</span> <span class="nav-text">¶CIRC(cross-interleaved Reed–Solomon code) coding</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#watermarking"><span class="nav-number">1.16.</span> <span class="nav-text">¶Watermarking</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#refs"><span class="nav-number">1.17.</span> <span class="nav-text">¶Refs</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">scps950707</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.0.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.3"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

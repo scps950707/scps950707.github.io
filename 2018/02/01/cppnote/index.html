@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-TW">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.0.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.0.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.3" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.0.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+<meta name="description" content="¶C/C++ ¶Bit field Bit Fields allow the packing of data in a structure. This is especially useful when memory or data storage is at a premium. Typical examples:  Packing several objects into a machine">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C and C++ notes">
+<meta property="og:url" content="scps950707.github.io/2018/02/01/cppnote/index.html">
+<meta property="og:site_name" content="scps950707&#39;s blog">
+<meta property="og:description" content="¶C/C++ ¶Bit field Bit Fields allow the packing of data in a structure. This is especially useful when memory or data storage is at a premium. Typical examples:  Packing several objects into a machine">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:updated_time" content="2018-02-01T08:01:25.360Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C and C++ notes">
+<meta name="twitter:description" content="¶C/C++ ¶Bit field Bit Fields allow the packing of data in a structure. This is especially useful when memory or data storage is at a premium. Typical examples:  Packing several objects into a machine">
+
+
+
+
+
+
+  <link rel="canonical" href="scps950707.github.io/2018/02/01/cppnote/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+  <title>C and C++ notes | scps950707's blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">scps950707's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首頁</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />歸檔</a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+  
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="scps950707.github.io/2018/02/01/cppnote/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="scps950707">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="scps950707's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C and C++ notes</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-01T01:44:53+08:00">2018-02-01</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="c-c"><a class="header-anchor" href="#c-c">¶</a>C/C++</h1>
+<h2 id="bit-field"><a class="header-anchor" href="#bit-field">¶</a>Bit field</h2>
+<p>Bit Fields allow the packing of data in a structure. This is especially useful when memory or data storage is at a premium. Typical examples:</p>
+<ul>
+<li>Packing several objects into a machine word. e.g. 1 bit flags can be compacted – Symbol tables in compilers.</li>
+<li>Reading external file formats – non-standard file formats could be read in. E.g. 9 bit integers.</li>
+</ul>
+<h3 id="explanation"><a class="header-anchor" href="#explanation">¶</a>Explanation<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></h3>
+<p>The number of bits in a bit field sets the limit to the range of values it can hold:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="comment">// three-bit unsigned field,allowed values are 0...7</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> b : <span class="number">3</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    S s = &#123;<span class="number">7</span>&#125;;</span><br><span class="line">    ++s.b; <span class="comment">// unsigned overflow (guaranteed wrap-around)</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; s.b &lt;&lt; <span class="string">'\n'</span>; <span class="comment">// output: 0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Multiple adjacent bit fields are usually packed together (although this behavior is implementation-defined):</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// will usually occupy 2 bytes:</span></span><br><span class="line">    <span class="comment">// 3 bits: value of b1</span></span><br><span class="line">    <span class="comment">// 2 bits: unused</span></span><br><span class="line">    <span class="comment">// 6 bits: value of b2</span></span><br><span class="line">    <span class="comment">// 2 bits: value of b3</span></span><br><span class="line">    <span class="comment">// 3 bits: unused</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> b1 : <span class="number">3</span>, : <span class="number">2</span>, b2 : <span class="number">6</span>, b3 : <span class="number">2</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>( S ) &lt;&lt; <span class="string">'\n'</span>; <span class="comment">// usually prints 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The special unnamed bit field of size zero can be forced to break up padding. It specifies that the next bit field begins at the beginning of its allocation unit:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span></span><br><span class="line">    <span class="comment">// will usually occupy 2 bytes:</span></span><br><span class="line">    <span class="comment">// 3 bits: value of b1</span></span><br><span class="line">    <span class="comment">// 5 bits: unused</span></span><br><span class="line">    <span class="comment">// 6 bits: value of b2</span></span><br><span class="line">    <span class="comment">// 2 bits: value of b3</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> b1 : <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> :<span class="number">0</span>; <span class="comment">// start a new byte</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> b2 : <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> b3 : <span class="number">2</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(S) &lt;&lt; <span class="string">'\n'</span>; <span class="comment">// usually prints 2</span></span><br><span class="line"><span class="comment">/* &#125; */</span></span><br></pre></td></tr></table></figure>
+<p>The following properties of bit fields are implementation-defined</p>
+<ul>
+<li>The value that results from assigning or initializing a signed bit field with a value out of range, or from incrementing a signed bit field past its range.</li>
+<li>Everything about the actual allocation details of bit fields within the class object
+<ul>
+<li>For example, on some platforms, bit fields don’t straddle bytes, on others they do</li>
+<li>Also, on some platforms, bit fields are packed left-to-right, on others right-to-left</li>
+</ul>
+</li>
+</ul>
+<div class="info">
+<p>It is implementation-defined whether a plain (neither explicitly signed nor unsigned) char, short, int, long, or long long bit-field is signed or unsigned.</p>
+</div>
+<h2 id="friend"><a class="header-anchor" href="#friend">¶</a>Friend</h2>
+<h3 id="definition"><a class="header-anchor" href="#definition">¶</a>Definition<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></h3>
+<p>The friend declaration appears in a class body and grants a function or another class access to private and protected members of the class where the friend declaration appears.</p>
+<h3 id="example"><a class="header-anchor" href="#example">¶</a>Example</h3>
+<ol>
+<li>
+<p>Designates a function or several functions as friends of this class</p>
+ <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Y</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> data; <span class="comment">// private member</span></span><br><span class="line">    <span class="comment">// the non-member function operator&lt;&lt; will have access to Y's private members</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="built_in">std</span>::ostream&amp; <span class="keyword">operator</span>&lt;&lt;(<span class="built_in">std</span>::ostream&amp; out, <span class="keyword">const</span> Y&amp; o);</span><br><span class="line">    <span class="keyword">friend</span> <span class="keyword">char</span>* X::foo(<span class="keyword">int</span>); <span class="comment">// members of other classes can be friends too</span></span><br><span class="line">    <span class="keyword">friend</span> X::X(<span class="keyword">char</span>), X::~X(); <span class="comment">// constructors and destructors can be friends</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// friend declaration does not declare a member function</span></span><br><span class="line"><span class="comment">// this operator&lt;&lt; still needs to be defined, as a non-member</span></span><br><span class="line"><span class="built_in">std</span>::ostream&amp; <span class="keyword">operator</span>&lt;&lt;(<span class="built_in">std</span>::ostream&amp; out, <span class="keyword">const</span> Y&amp; y)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> out &lt;&lt; y.data; <span class="comment">// can access private member Y::data</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>(only allowed in non-local class definitions) Defines a non-member function, and makes it a friend of this class at the same time. Such non-member function is always inline.</p>
+ <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">friend_set</span><span class="params">(X&amp; p, <span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        p.a = i; <span class="comment">// this is a non-member function</span></span><br><span class="line">    &#125;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">member_set</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        a = i; <span class="comment">// this is a member function</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="notes"><a class="header-anchor" href="#notes">¶</a>Notes</h3>
+<ul>
+<li>Friendship is not transitive (a friend of your friend is not your friend)</li>
+<li>Friendship is not inherited (your friend’s children are not your friends)</li>
+<li>When should you use ‘friend’ in C++?<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></li>
+</ul>
+<h2 id="linkage"><a class="header-anchor" href="#linkage">¶</a>Linkage<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup><sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></h2>
+<p>Linkage describes how identifiers can or can not refer to the same entity throughout the whole program or one single translation unit.</p>
+<div class="info">
+<p>A translation unit is a source file plus all the headers you <code>#included</code> in it, from which the compiler creates the object file.</p>
+</div>
+<h3 id="internal-linkage"><a class="header-anchor" href="#internal-linkage">¶</a>Internal linkage</h3>
+<ul>
+<li>Internal linkage means that storage is created to represent the identifier only for the translation unit being compiled.</li>
+<li>Other translation units may use the same identifier name with internal linkage, or for a global variable, and no conflicts will be found by the linker because separate storage is created for each identifier</li>
+<li>Any of the following names declared at namespace scope have internal linkage
+<ul>
+<li>variables, functions, or function templates declared static</li>
+<li>data members of anonymous unions</li>
+</ul>
+</li>
+</ul>
+<h3 id="external-linkage"><a class="header-anchor" href="#external-linkage">¶</a>External linkage</h3>
+<ul>
+<li>External linkage means that a single piece of storage is created to represent the identifier for all translation units being compiled. The storage is created once, and the linker must resolve all other references to that storage.</li>
+<li>Identifiers with external linkage can be accessed from other translation units by declaring them with the keyword extern.</li>
+</ul>
+<h3 id="no-linkage"><a class="header-anchor" href="#no-linkage">¶</a>No linkage</h3>
+<p>The name can be referred to only from the scope it is in.<br>
+Any of the following names declared at block scope have no linkage:</p>
+<ul>
+<li>Variables that aren’t explicitly declared extern (regardless of the static modifier)</li>
+<li>Local classes and their member functions</li>
+<li>Other names declared at block scope such as typedefs, enumerations, and enumerators</li>
+</ul>
+<h2 id="storage-class-specifiers"><a class="header-anchor" href="#storage-class-specifiers">¶</a>Storage class specifiers<sup class="footnote-ref"><a href="#fn4" id="fnref4:1">[4]</a></sup><sup class="footnote-ref"><a href="#fn5" id="fnref5:1">[5]</a></sup></h2>
+<h3 id="auto"><a class="header-anchor" href="#auto">¶</a>Auto</h3>
+<p>The auto specifier was only allowed for objects declared at block scope or in function parameter lists. It indicated automatic storage duration, which is the default for these kinds of declarations. The meaning of this keyword was changed in C++11</p>
+<h3 id="register"><a class="header-anchor" href="#register">¶</a>Register</h3>
+<p>The register storage class is used to define local variables that should be stored in a register instead of RAM (if possible) (for faster access speed). This means that the variable has a maximum size equal to the register size (usually one word) and can’t have the unary &amp; operator applied to it (as it does not have a memory location).</p>
+<p>However, there is no guarantee that the variable will be placed in a register or even that the access speed will increase. It is just a hint to the compiler, this keyword was deprecated in C++11.</p>
+<h3 id="static"><a class="header-anchor" href="#static">¶</a>Static</h3>
+<ul>
+<li>
+<p>A static global variable or static function at file scope specifies that the variable or function has internal linkage.</p>
+</li>
+<li>
+<p>A static variable in a function specifies that the variable retains its state between calls to that function.</p>
+<div class="info">
+<p>Variables declared at block scope with the specifier static have static storage duration but are initialized the first time control passes through their declaration (unless their initialization is zero- or constant-initialization, which can be performed before the block is first entered). On all further calls, the declaration is skipped.</p>
+</div>
+</li>
+<li>
+<p>A static data member in a class declaration specifies that one copy of the member is shared by all instances of the class.</p>
+<ul>
+<li>A static data member must be defined at file scope.</li>
+<li>An integral data type member<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup> that you declare as const static can have an initializer.<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> num;<span class="comment">/* just a declaration */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> num2 = <span class="number">5</span>;<span class="comment">// const static integral type can have initializer</span></span><br><span class="line">    <span class="comment">/* static int num3 = 3;//complier error */</span></span><br><span class="line">    <span class="comment">/* non-const static data member nust be initialized out of line */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> A::num = <span class="number">1</span>;</span><br><span class="line"><span class="comment">//The member shall still be defined in file scope</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( <span class="keyword">void</span> )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; A::num &lt;&lt; <span class="built_in">endl</span>;<span class="comment">// output 1</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; A::num2 &lt;&lt; <span class="built_in">endl</span>;<span class="comment">// output 5</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>When you declare a member function in a class declaration, the static keyword specifies that the function is shared by all instances of the class.</p>
+<ul>
+<li>A static member function cannot access an instance member because the function does not have an implicit this pointer.</li>
+<li>To access an instance member, declare the function with a parameter that is an instance pointer or reference.</li>
+</ul>
+</li>
+<li>
+<p>You cannot declare the members of a union as static. However, a globally declared anonymous union must be explicitly declared static.</p>
+</li>
+</ul>
+<h3 id="extern"><a class="header-anchor" href="#extern">¶</a>Extern</h3>
+<p>The extern specifier is only allowed in the declarations of variables and functions (except class members or function parameters). It specifies external linkage, and does not technically affect storage duration, but it cannot be used in a definition of an automatic storage duration object, so all extern objects have static or thread durations. In addition, a variable declaration that uses extern and has no initializer is not a definition.</p>
+<h2 id="casting"><a class="header-anchor" href="#casting">¶</a>Casting<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup><sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup><sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></h2>
+<h3 id="explicit-type-casting"><a class="header-anchor" href="#explicit-type-casting">¶</a>Explicit type casting</h3>
+<p>Explicit type casting is a way of explicitly informing the compiler that you intend to make the conversion and that you are aware that data loss might occur</p>
+<h3 id="c-style-casting"><a class="header-anchor" href="#c-style-casting">¶</a>C style casting</h3>
+<p>A C-style cast is defined as the first of the following which succeeds:</p>
+<ul>
+<li>const_cast</li>
+<li>static_cast&lt;new_type&gt;(expression)</li>
+<li>static_cast (with extensions) followed by const_cast;</li>
+<li>reinterpret_cast&lt;new_type&gt;(expression);</li>
+<li>reinterpret_cast followed by const_cast</li>
+</ul>
+<p>It can therefore be used as a replacement for other casts in some instances, but can be extremely dangerous because of the ability to devolve into a reinterpret_cast, and the latter should be preferred when explicit casting is needed, unless you are sure static_cast will succeed or reinterpret_cast will fail. Even then, consider the longer, more explicit option.</p>
+<h3 id="static-cast"><a class="header-anchor" href="#static-cast">¶</a>static_cast</h3>
+<p>static_cast can perform conversions between pointers to related classes, not only upcasts (from pointer-to-derived to pointer-to-base), but also downcasts (from pointer-to-base to pointer-to-derived). No checks are performed during runtime to guarantee that the object being converted is in fact a full object of the destination type. Therefore, it is up to the programmer to ensure that the conversion is safe. On the other side, it does not incur the overhead of the type-safety checks of dynamic_cast.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello world, this is B!\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span> :</span> B &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello world, this is D!\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">E</span> &#123;</span> ONE = <span class="number">1</span>, TWO, THREE &#125;;</span><br><span class="line"><span class="keyword">enum</span> EU &#123; ONE = <span class="number">1</span>, TWO, THREE &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 1: initializing conversion</span></span><br><span class="line">    <span class="keyword">int</span> n = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(<span class="number">3.14</span>);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"n = "</span> &lt;&lt; n &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v = <span class="keyword">static_cast</span>&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;(<span class="number">10</span>);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"v.size() = "</span> &lt;&lt; v.size() &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2: static downcast</span></span><br><span class="line">    D d;</span><br><span class="line">    B&amp; br = d; <span class="comment">// upcast via implicit conversion</span></span><br><span class="line">    br.hello();</span><br><span class="line">    D&amp; another_d = <span class="keyword">static_cast</span>&lt;D&amp;&gt;(br); <span class="comment">// downcast</span></span><br><span class="line">    another_d.hello();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3: lvalue to xvalue</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2 = <span class="keyword">static_cast</span>&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp;&amp;&gt;(v);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"after move, v.size() = "</span> &lt;&lt; v.size() &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4: discarded-value expression</span></span><br><span class="line">    <span class="keyword">static_cast</span>&lt;<span class="keyword">void</span>&gt;(v2.size());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5. inverse of implicit conversion</span></span><br><span class="line">    <span class="keyword">void</span>* nv = &amp;n;</span><br><span class="line">    <span class="keyword">int</span>* ni = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>*&gt;(nv);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*ni = "</span> &lt;&lt; *ni &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 6. array-to-pointer followed by upcast</span></span><br><span class="line">    D a[<span class="number">10</span>];</span><br><span class="line">    B* dp = <span class="keyword">static_cast</span>&lt;B*&gt;(a);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 7. scoped enum to int or float</span></span><br><span class="line">    E e = E::ONE;</span><br><span class="line">    <span class="keyword">int</span> one = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(e);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; one &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 8. int to enum, enum to another enum</span></span><br><span class="line">    E e2 = <span class="keyword">static_cast</span>&lt;E&gt;(one);</span><br><span class="line">    EU eu = <span class="keyword">static_cast</span>&lt;EU&gt;(e2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 9. pointer to member upcast</span></span><br><span class="line">    <span class="keyword">int</span> D::*pm = &amp;D::m;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; br.*<span class="keyword">static_cast</span>&lt;<span class="keyword">int</span> B::*&gt;(pm) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 10. void* to any type</span></span><br><span class="line">    <span class="keyword">void</span>* voidp = &amp;e;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;* p = <span class="keyword">static_cast</span>&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;*&gt;(voidp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="dynamic-cast"><a class="header-anchor" href="#dynamic-cast">¶</a>dynamic_cast</h3>
+<p>dynamic_cast can only be used with pointers and references to classes (or with void*). Its purpose is to ensure that the result of the type conversion points to a valid complete object of the destination pointer type.</p>
+<p>This naturally includes pointer upcast (converting from pointer-to-derived to pointer-to-base), in the same way as allowed as an implicit conversion.</p>
+<p>But dynamic_cast can also downcast (convert from pointer-to-base to pointer-to-derived) polymorphic classes (those with virtual members) if -and only if- the pointed object is a valid complete object of the target type</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;exception&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span> <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">dummy</span><span class="params">()</span> </span>&#123;&#125; &#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base &#123; <span class="keyword">int</span> a; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    Base * pba = <span class="keyword">new</span> Derived;</span><br><span class="line">    Base * pbb = <span class="keyword">new</span> Base;</span><br><span class="line">    Derived * pd;</span><br><span class="line"></span><br><span class="line">    pd = <span class="keyword">dynamic_cast</span>&lt;Derived*&gt;(pba);</span><br><span class="line">    <span class="keyword">if</span> (pd==<span class="number">0</span>) <span class="built_in">cout</span> &lt;&lt; <span class="string">"Null pointer on first type-cast.\n"</span>;</span><br><span class="line"></span><br><span class="line">    pd = <span class="keyword">dynamic_cast</span>&lt;Derived*&gt;(pbb);</span><br><span class="line">    <span class="keyword">if</span> (pd==<span class="number">0</span>) <span class="built_in">cout</span> &lt;&lt; <span class="string">"Null pointer on second type-cast.\n"</span>;</span><br><span class="line"></span><br><span class="line">  &#125; <span class="keyword">catch</span> (exception&amp; e) &#123;<span class="built_in">cout</span> &lt;&lt; <span class="string">"Exception: "</span> &lt;&lt; e.what();&#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="reinterpret-cast"><a class="header-anchor" href="#reinterpret-cast">¶</a>reinterpret_cast</h3>
+<p>reinterpret_cast turns one type directly into another - such as casting the value from one pointer to another, or storing a pointer in an int, or all sorts of other nasty <a href="http://things.It" target="_blank" rel="noopener">things.It</a>’s used primarily for particularly weird conversions and bit manipulations, like turning a raw data stream into actual data, or storing data in the low bits of an aligned pointer.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdint.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( <span class="keyword">void</span> )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> tmp = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%p\n"</span>,&amp;tmp);<span class="comment">// print address of tmp</span></span><br><span class="line">    <span class="keyword">int64_t</span> addr = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">int64_t</span>&gt;(&amp;tmp);</span><br><span class="line">    <span class="comment">// force complier to cast tmp's address to 64bit integer value</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lx\n"</span>,addr);</span><br><span class="line">    <span class="comment">// on my computer(64bit) both print "7fffc56e09dc"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="const-cast"><a class="header-anchor" href="#const-cast">¶</a>const_cast<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></h3>
+<p>used to add/remove const(ness) (or volatile-ness) of a variable.</p>
+<ul>
+<li>Although const cast allows the value of a constant to be changed, doing so is still invalid code that may cause a run-time error. This could occur for example if the constant was located in a section of read-only memory.</li>
+<li>Const cast is instead used mainly when there is a function that takes a non-constant pointer argument, even though it does not modify the pointee.The function can then be passed a constant variable by using a const cast.</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fucn</span><span class="params">(<span class="keyword">int</span> *p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>,*p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( <span class="keyword">void</span> )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> myConst=<span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span> *nonConst = <span class="keyword">const_cast</span>&lt;<span class="keyword">int</span>*&gt;(&amp;myConst);<span class="comment">// remove const attribute</span></span><br><span class="line">    <span class="comment">/* *nonConst = 10; potential run-time error */</span></span><br><span class="line">    <span class="comment">/* fucn(&amp;myConst); error: cannot convert const int* to int* */</span></span><br><span class="line">    fucn(nonConst);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="const"><a class="header-anchor" href="#const">¶</a>Const<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup><sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></h2>
+<h3 id="basic-usage"><a class="header-anchor" href="#basic-usage">¶</a>basic usage</h3>
+<h4 id="a-pointer-which-points-to-constant-variable"><a class="header-anchor" href="#a-pointer-which-points-to-constant-variable">¶</a>a pointer which points to constant variable</h4>
+<p><code>const int *ptr</code> or <code>int const *ptr</code></p>
+<h4 id="a-constant-pointer-which-points-to-variable"><a class="header-anchor" href="#a-constant-pointer-which-points-to-variable">¶</a>a constant pointer which points to variable</h4>
+<p><code>int * const ptr</code></p>
+<h4 id="a-constant-pointer-which-points-to-constant-variable"><a class="header-anchor" href="#a-constant-pointer-which-points-to-constant-variable">¶</a>a constant pointer which points to constant variable</h4>
+<p><code>int const * const ptr</code></p>
+<h3 id="const-member-functions"><a class="header-anchor" href="#const-member-functions">¶</a>const member functions</h3>
+<p>Declaring a member function with the const keyword specifies that the function is a “read-only” function that does not modify the object for which it is called. A constant member function cannot modify any non-static data members or call any member functions that aren’t constant. To declare a constant member function, place the const keyword after the closing parenthesis of the argument list. The const keyword is required in both the declaration and the definition</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    foo(<span class="keyword">int</span> x,<span class="keyword">int</span> y):data(x)&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">void</span> foo::func() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;data= <span class="number">3</span>;</span><br><span class="line">    <span class="comment">// error:can't assign to non-static data member within const member</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; data &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="const-return-values"><a class="header-anchor" href="#const-return-values">¶</a>const return values</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">func</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( <span class="keyword">void</span> )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    func()[<span class="number">0</span>]=<span class="string">'a'</span>;<span class="comment">//could cause write data into read only memory, use const to let complier warn programer</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="parameter-passing-tip"><a class="header-anchor" href="#parameter-passing-tip">¶</a>parameter passing tip</h3>
+<p>call by value makes copy of parameter, in C++ we can use call by reference simply pass reference(address) to save the time for copying data, so we can use <code>const</code> to prevent data modified.For example <code>void func(int &amp;a)</code>.</p>
+<h2 id="64-bit-data-models"><a class="header-anchor" href="#64-bit-data-models">¶</a>64-bit data models<sup class="footnote-ref"><a href="#fn14" id="fnref14">[14]</a></sup></h2>
+<table>
+<thead>
+<tr>
+<th>Data model</th>
+<th>short (integer)</th>
+<th>int</th>
+<th>long (integer)</th>
+<th>long long</th>
+<th>pointers,size_t</th>
+<th>Sample operating systems</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLP64</td>
+<td>16</td>
+<td>32</td>
+<td>32</td>
+<td>64</td>
+<td>64</td>
+<td>Microsoft Windows (x86-64 and IA-64) using Visual C++; and MinGW</td>
+</tr>
+<tr>
+<td>LP64</td>
+<td>16</td>
+<td>32</td>
+<td>64</td>
+<td>64</td>
+<td>64</td>
+<td>Most Unix and Unix-like systems, e.g., Solaris, Linux, BSD, macOS. Windowswhen using Cygwin; z/OS</td>
+</tr>
+<tr>
+<td>ILP64</td>
+<td>16</td>
+<td>64</td>
+<td>64</td>
+<td>64</td>
+<td>64</td>
+<td>HAL Computer Systems port of Solaris to the SPARC64</td>
+</tr>
+<tr>
+<td>SILP64</td>
+<td>64</td>
+<td>64</td>
+<td>64</td>
+<td>64</td>
+<td>64</td>
+<td>Classic UNICOS[40] (versus UNICOS/mp, etc.)</td>
+</tr>
+</tbody>
+</table>
+<p>Some experiment</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#define TYPESIZE(a) printf(#a&quot;:%d\n&quot;,(int)sizeof(a))</span><br><span class="line">int main( int argc, char *argv[] )</span><br><span class="line">&#123;</span><br><span class="line">    TYPESIZE(char);</span><br><span class="line">    TYPESIZE(short);</span><br><span class="line">    TYPESIZE(int);</span><br><span class="line">    TYPESIZE(long);</span><br><span class="line">    TYPESIZE(long long);</span><br><span class="line">    TYPESIZE(float);</span><br><span class="line">    TYPESIZE(double);</span><br><span class="line">    TYPESIZE(void*);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> gcc -m32 test.c &amp;&amp; ./a.out</span><br><span class="line">char:1</span><br><span class="line">short:2</span><br><span class="line">int:4</span><br><span class="line">long:4</span><br><span class="line">long long:8</span><br><span class="line">float:4</span><br><span class="line">double:8</span><br><span class="line">void*:4</span><br><span class="line"><span class="meta">$</span>file a.out</span><br><span class="line">a.out: ELF 32-bit LSB executable, Intel 80386</span><br><span class="line"><span class="meta">$</span> gcc -m64 test.c &amp;&amp; ./a.out</span><br><span class="line">char:1</span><br><span class="line">short:2</span><br><span class="line">int:4</span><br><span class="line">long:8</span><br><span class="line">long long:8</span><br><span class="line">float:4</span><br><span class="line">double:8</span><br><span class="line">void*:8</span><br><span class="line"><span class="meta">$</span>file a.out</span><br><span class="line">a.out: ELF 64-bit LSB executable, x86-64</span><br></pre></td></tr></table></figure>
+<h2 id="alignment"><a class="header-anchor" href="#alignment">¶</a>Alignment<sup class="footnote-ref"><a href="#fn15" id="fnref15">[15]</a></sup></h2>
+<p>The type of each member of the structure usually has a default alignment, meaning that it will, unless otherwise requested by the programmer, be aligned on a pre-determined boundary. The following typical alignments are valid for compilers from Microsoft (Visual C++), Borland/CodeGear (C++Builder), Digital Mars (DMC), and GNU (GCC) when compiling for 32-bit x86</p>
+<ul>
+<li>A char (one byte) will be 1-byte aligned.</li>
+<li>A short (two bytes) will be 2-byte aligned.</li>
+<li>An int (four bytes) will be 4-byte aligned.</li>
+<li>A long (four bytes) will be 4-byte aligned.</li>
+<li>A float (four bytes) will be 4-byte aligned.</li>
+<li>A double (eight bytes) will be 8-byte aligned on Windows and 4-byte aligned on Linux (8-byte with -malign-double compile time option).</li>
+<li>A long long (eight bytes) will be 4-byte aligned.</li>
+<li>A long double (ten bytes with C++ Builder and DMC, eight bytes with Visual C++, twelve bytes with GCC) will be 8-byte aligned with C++ Builder, 2-byte aligned with DMC, 8-byte aligned with Visual C++, and 4-byte aligned with GCC.</li>
+<li>Any pointer (four bytes) will be 4-byte aligned. (e.g.: char*, int*)</li>
+</ul>
+<p>The only notable differences in alignment for an LP64 64-bit system when compared to a 32-bit system are:</p>
+<ul>
+<li>A long (eight bytes) will be 8-byte aligned.</li>
+<li>A double (eight bytes) will be 8-byte aligned.</li>
+<li>A long long (eight bytes) will be 8-byte aligned.</li>
+<li>A long double (eight bytes with Visual C++, sixteen bytes with GCC) will be 8-byte aligned with Visual C++ and 16-byte aligned with GCC.</li>
+<li>Any pointer (eight bytes) will be 8-byte aligned.</li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="http://en.cppreference.com/w/cpp/language/bit_field" target="_blank" rel="noopener">cppreference bit_field</a> <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="http://en.cppreference.com/w/cpp/language/friend" target="_blank" rel="noopener">cppreference friend</a> <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="http://stackoverflow.com/questions/17434/when-should-you-use-friend-in-c" target="_blank" rel="noopener">When should you use ‘friend’ in C++?</a> <a href="#fnref3" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><a href="http://en.cppreference.com/w/cpp/language/storage_duration" target="_blank" rel="noopener">Storage class specifiers</a> <a href="#fnref4" class="footnote-backref">↩</a> <a href="#fnref4:1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p><a href="http://yyao.info/c++/2015/03/18/cpp-auto-register-static-const-volatile-linkage-scope" target="_blank" rel="noopener">C++: auto / register / static / const / volatile / linkage / scope</a> <a href="#fnref5" class="footnote-backref">↩</a> <a href="#fnref5:1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p><a href="https://msdn.microsoft.com/en-us/library/cc953fe1.aspx" target="_blank" rel="noopener">Fundamental Types (C++)</a> <a href="#fnref6" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p><a href="http://stackoverflow.com/a/11178565" target="_blank" rel="noopener">static variable in the class declaration or definition?</a> <a href="#fnref7" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p><a href="http://ot-note.logdown.com/posts/173174/note-cpp-named-type-convertion" target="_blank" rel="noopener">C++ 的顯性轉型與隱性轉型 - Explicitly/ImplicitlyType Conversion</a> <a href="#fnref8" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p><a href="http://stackoverflow.com/a/332086" target="_blank" rel="noopener">When should static_cast, dynamic_cast, const_cast and reinterpret_cast be used?</a> <a href="#fnref9" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p><a href="http://www.cplusplus.com/doc/tutorial/typecasting/" target="_blank" rel="noopener">Type conversions</a> <a href="#fnref10" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p><a href="http://stackoverflow.com/a/18414172" target="_blank" rel="noopener">Regular cast vs. static_cast vs. dynamic_cast</a> <a href="#fnref11" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p><a href="http://123android.blogspot.tw/2012/02/cconst.html" target="_blank" rel="noopener">C++學習筆記 常數 Const</a> <a href="#fnref12" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p><a href="http://duramecho.com/ComputerInformation/WhyHowCppConst.html" target="_blank" rel="noopener">The C++ ‘const’ Declaration: Why &amp; How</a> <a href="#fnref13" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn14" class="footnote-item"><p><a href="https://en.wikipedia.org/wiki/64-bit_computing" target="_blank" rel="noopener">64-bit computing</a> <a href="#fnref14" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn15" class="footnote-item"><p><a href="https://en.wikipedia.org/wiki/Data_structure_alignment" target="_blank" rel="noopener">Data_structure_alignment</a> <a href="#fnref15" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/01/os/" rel="next" title="Operating System Note">
+                <i class="fa fa-chevron-left"></i> Operating System Note
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概要
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">scps950707</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">文章</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/scps950707" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:scps950707@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/scps950707" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#c-c"><span class="nav-number">1.</span> <span class="nav-text">¶C/C++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bit-field"><span class="nav-number">1.1.</span> <span class="nav-text">¶Bit field</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#explanation"><span class="nav-number">1.1.1.</span> <span class="nav-text">¶Explanation[1]</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#friend"><span class="nav-number">1.2.</span> <span class="nav-text">¶Friend</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#definition"><span class="nav-number">1.2.1.</span> <span class="nav-text">¶Definition[2]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#example"><span class="nav-number">1.2.2.</span> <span class="nav-text">¶Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#notes"><span class="nav-number">1.2.3.</span> <span class="nav-text">¶Notes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linkage"><span class="nav-number">1.3.</span> <span class="nav-text">¶Linkage[4][5]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#internal-linkage"><span class="nav-number">1.3.1.</span> <span class="nav-text">¶Internal linkage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#external-linkage"><span class="nav-number">1.3.2.</span> <span class="nav-text">¶External linkage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#no-linkage"><span class="nav-number">1.3.3.</span> <span class="nav-text">¶No linkage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#storage-class-specifiers"><span class="nav-number">1.4.</span> <span class="nav-text">¶Storage class specifiers[4][5]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#auto"><span class="nav-number">1.4.1.</span> <span class="nav-text">¶Auto</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#register"><span class="nav-number">1.4.2.</span> <span class="nav-text">¶Register</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#static"><span class="nav-number">1.4.3.</span> <span class="nav-text">¶Static</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#extern"><span class="nav-number">1.4.4.</span> <span class="nav-text">¶Extern</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#casting"><span class="nav-number">1.5.</span> <span class="nav-text">¶Casting[8][9][10]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#explicit-type-casting"><span class="nav-number">1.5.1.</span> <span class="nav-text">¶Explicit type casting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c-style-casting"><span class="nav-number">1.5.2.</span> <span class="nav-text">¶C style casting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#static-cast"><span class="nav-number">1.5.3.</span> <span class="nav-text">¶static_cast</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dynamic-cast"><span class="nav-number">1.5.4.</span> <span class="nav-text">¶dynamic_cast</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reinterpret-cast"><span class="nav-number">1.5.5.</span> <span class="nav-text">¶reinterpret_cast</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const-cast"><span class="nav-number">1.5.6.</span> <span class="nav-text">¶const_cast[11]</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const"><span class="nav-number">1.6.</span> <span class="nav-text">¶Const[12][13]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#basic-usage"><span class="nav-number">1.6.1.</span> <span class="nav-text">¶basic usage</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-pointer-which-points-to-constant-variable"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">¶a pointer which points to constant variable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#a-constant-pointer-which-points-to-variable"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">¶a constant pointer which points to variable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#a-constant-pointer-which-points-to-constant-variable"><span class="nav-number">1.6.1.3.</span> <span class="nav-text">¶a constant pointer which points to constant variable</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const-member-functions"><span class="nav-number">1.6.2.</span> <span class="nav-text">¶const member functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const-return-values"><span class="nav-number">1.6.3.</span> <span class="nav-text">¶const return values</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#parameter-passing-tip"><span class="nav-number">1.6.4.</span> <span class="nav-text">¶parameter passing tip</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#64-bit-data-models"><span class="nav-number">1.7.</span> <span class="nav-text">¶64-bit data models[14]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alignment"><span class="nav-number">1.8.</span> <span class="nav-text">¶Alignment[15]</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">scps950707</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.0.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.3"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
