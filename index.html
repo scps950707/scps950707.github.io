@@ -333,9 +333,8 @@
           
           ¶Android Bitmap 解析
 本篇文章基於8.0.0_r1的AOSP
-¶Bitmap創建
-Android Bitmap和Canvas綁定做使用並透過createBitmap產生
-12Bitmap b = Bitmap.createBitmap(400, 400, Bitmap.Config.
+¶copy
+1234567public Bitmap copy(Config config, boolean isMutable) &#123;        checkRecycled("Can't copy a rec
           ...
           <!--noindex-->
           <div class="post-button text-center">
