@@ -201,6 +201,46 @@ Bitmap(long nativeBitmap, int width, int height, int density,
 }
 ```
 
+## recycle
+
+回收機制本身是非同步的
+
+```java=
+public void recycle() {
+if (!mRecycled && mNativePtr != 0) {
+    if (nativeRecycle(mNativePtr)) {
+        mNinePatchChunk = null;
+    }
+    mRecycled = true;
+    }
+}
+```
+
+JNI的實作在[^2]中
+```cpp=
+static jboolean Bitmap_recycle(JNIEnv* env, jobject, jlong bitmapHandle) {
+    LocalScopedBitmap bitmap(bitmapHandle);
+    bitmap->freePixels();
+    return JNI_TRUE;
+}
+
+class BitmapWrapper {
+public:
+    BitmapWrapper(Bitmap* bitmap)
+        : mBitmap(bitmap) { }
+
+    void freePixels() {
+        mInfo = mBitmap->info();
+        mHasHardwareMipMap = mBitmap->hasHardwareMipMap();
+        mAllocationSize = mBitmap->getAllocationByteCount();
+        mRowBytes = mBitmap->rowBytes();
+        mGenerationId = mBitmap->getGenerationID();
+        mIsHardware = mBitmap->isHardware();
+        mBitmap.reset();
+    }
+}
+```
+最後呼叫skia SkBitmap[^5]的reset呼叫sk_bzero將bitmapinstance清空
 
 [^1]:[frameworks/base/graphics/java/android/graphics/Bitmap.java](https://android.googlesource.com/platform/frameworks/base/+/android-8.0.0_r1/graphics/java/android/graphics/Bitmap.java)
 
