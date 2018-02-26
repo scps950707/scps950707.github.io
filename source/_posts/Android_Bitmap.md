@@ -7,7 +7,69 @@ tags:
 
 本篇文章基於8.0.0_r1的AOSP
 
-## Bitmap創建
+## copy
+
+```java=
+public Bitmap copy(Config config, boolean isMutable) {
+        checkRecycled("Can't copy a recycled bitmap");
+        ...
+        Bitmap b = nativeCopy(mNativePtr, config.nativeInt, isMutable);
+        ...
+        return b;
+    }
+```
+
+copy對應的JNI實作在[^2]中呼叫`createBitmap`產生java object,詳細請見[createBitmap](#createBitmap)
+
+```cpp=
+static jobject Bitmap_copy(JNIEnv* env, jobject, jlong srcHandle,
+                           jint dstConfigHandle, jboolean isMutable) {
+    SkBitmap src;
+    reinterpret_cast<BitmapWrapper*>(srcHandle)->getSkBitmap(&src);
+    ......
+
+    SkColorType dstCT = GraphicsJNI::legacyBitmapConfigToColorType(dstConfigHandle);
+    SkBitmap result;
+    HeapAllocator allocator;
+
+    if (!bitmapCopyTo(&result, dstCT, src, &allocator)) {
+        return NULL;
+    }
+    auto bitmap = allocator.getStorageObjAndReset();
+    return createBitmap(env, bitmap, getPremulBitmapCreateFlags(isMutable));
+}
+```
+
+bitmapCopyTo的實現同在[^2]中,設定了新的SkBitmap的特性
+並且呼叫[^5]中的`copyTo`讓skia完成SkBitmap最底層的copy
+
+```cpp=
+static bool bitmapCopyTo(SkBitmap* dst, SkColorType dstCT, const SkBitmap& src,
+        SkBitmap::Allocator* alloc) {
+	...
+        SkImageInfo dstInfo = src.info().makeColorType(dstCT);
+        if (dstCT == kRGBA_F16_SkColorType) {
+             dstInfo = dstInfo.makeColorSpace(SkColorSpace::MakeSRGBLinear());
+        }
+        if (!dst->setInfo(dstInfo)) {return false;}
+        if (!dst->tryAllocPixels(alloc, nullptr)) {return false;}
+        switch (dstCT) {
+            case kRGBA_8888_SkColorType:
+            case kBGRA_8888_SkColorType: {...}
+            case kRGB_565_SkColorType: {...}
+            case kRGBA_F16_SkColorType: {...}
+            default:
+                return false;
+        }
+    }
+    return src.copyTo(dst, dstCT, alloc);
+}
+```
+
+
+
+
+## createBitmap
 Android Bitmap和Canvas綁定做使用並透過`createBitmap`產生
 
 ```java=
@@ -147,3 +209,10 @@ Bitmap(long nativeBitmap, int width, int height, int density,
 [^3]:[frameworks/base/libs/hwui/hwui/Bitmap.cpp](https://android.googlesource.com/platform/frameworks/base/+/android-8.0.0_r1/libs/hwui/hwui/Bitmap.cpp)
 
 [^4]:[frameworks/base/libs/hwui/hwui/Bitmap.h](https://android.googlesource.com/platform/frameworks/base/+/android-8.0.0_r1/libs/hwui/hwui/Bitmap.h)
+
+[^5]:[external/skia/src/core/SkBitmap.cpp](https://android.googlesource.com/platform/external/skia/+/android-8.0.0_r1/src/core/SkBitmap.cpp)
+
+## Ref
+
+- [Bitmap](https://developer.android.com/reference/android/graphics/Bitmap.html)
+- [Android6.0 Bitmap存储以及Parcel传输源码分析](http://blog.csdn.net/xxxzhi/article/details/51490253)
