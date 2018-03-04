@@ -2,6 +2,8 @@
 title: OSDI-Booting-process
 date: 2018-03-02 17:29:48
 tags:
+- OSDI
+- NCTU
 ---
 # Booting process
 

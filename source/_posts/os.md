@@ -1,7 +1,7 @@
 ---
 title: Operating System Note
 date: 2018-02-01 01:35:25
-tags:
+tags: note
 ---
 # Operating System
 

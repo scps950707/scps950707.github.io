@@ -1,7 +1,7 @@
 ---
 title: C and C++ notes
 date: 2018-02-01 01:44:53
-tags:
+tags: note
 ---
 # C/C++
 

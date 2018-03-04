@@ -1,7 +1,7 @@
 ---
 title: Data Compression Note
 date: 2018-02-01 01:29:15
-tags:
+tags: note
 ---
 # Data Compression
 
