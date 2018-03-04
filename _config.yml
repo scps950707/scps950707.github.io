@@ -143,3 +143,9 @@ sequence:
   options:
     theme:
     css_class:
+
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
