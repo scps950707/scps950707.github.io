@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "hexo": {
-    "version": "3.5.0"
+    "version": "3.6.0"
   },
   "dependencies": {
-    "hexo": "^3.2.0",
+    "hexo": "^3.6.0",
     "hexo-deployer-git": "^0.3.1",
     "hexo-filter-flowchart": "^1.0.4",
     "hexo-filter-github-emojis": "^1.4.4",
@@ -20,7 +20,7 @@
     "hexo-renderer-ejs": "^0.3.0",
     "hexo-renderer-markdown-it": "^3.4.1",
     "hexo-renderer-stylus": "^0.3.1",
-    "hexo-server": "^0.2.0",
+    "hexo-server": "^0.2.2",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-checkbox": "^1.1.0",
     "markdown-it-container": "^2.0.0",
