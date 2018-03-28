@@ -6,7 +6,7 @@ tags:
 - NCTU
 ---
 # Booting process
-
+###### tags: `OSDI` `NCTU`
 ## Bootloader OverView
 
 ### First loader
@@ -212,17 +212,22 @@ SerialOutputString("Autoboot in progress, press any key...");
 
 - Hardware
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Motherboard_diagram.svg/450px-Motherboard_diagram.svg.png =300x462)
-
 - First stage
+    1. CPU一開機就會去抓FFFFFFF0h(ROM addr)的BIOS
     1. 將384KB的BIOS code從ROM搬到RAM並從0xFFFF0開始執行
     1. Power supply sends POWER GOOD to CPU
     1. CPU resets
     1. Run System BIOS code at 0x0000~0xFFFF with respect to ROM address(But BIOS is already in RAM now)
     1. Jump to a real BIOS start address(通常不會隔太遠)
-    1. POST(power on self test)
+    1. POST(power on self test)，其中會檢查例如:是不是重開機，判斷的flag放在CMOS裡
     1. Beep if there is an error
     1. Read CMOS data/settings
-    1. Run 2^nd^‐stage boot
+    1. 發出INT 19h去找開機硬碟，這檢查動作包含重硬碟load 1 sector(512bytes)到0x7c00並檢查最後兩個byte是不是0xAA55
+    1. 主控權交給0x7c00這邊會準備load MBR
+
+[BIOS](https://en.wikipedia.org/wiki/BIOS)
+[UEFI](https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface)
+[INT 19H: Bootstrap Loader](http://webpages.charter.net/danrollins/techhelp/0243.HTM)
 
 ![](https://i.imgur.com/Mdiik0m.png =430x367)
 
@@ -255,7 +260,7 @@ Linux在開機的時候為了速度會使用Ramdisk將一部份driver載入並�
 Ref:[initrd和initramfs的區別](https://read01.com/zh-tw/QzJka.html)
 
 - Example
-![](https://i.imgur.com/SLENxVh.png)
+![](https://i.imgur.com/L0v2cF7.png)
 step 6 從floppy disk load MBR到0x7C00並複製一塊到0x90000並在那邊執行
 
 - Mount root disk
@@ -281,4 +286,8 @@ step 6 從floppy disk load MBR到0x7C00並複製一塊到0x90000並在那邊執�
 * Fast Kernel Decompression
 * Kernel XIP(execution in place kernel run in ROM)
 
-###### tags: `OSDI` `NCTU`
+
+# Reference
+* [Jserv's blog: 探索 Linux bootloader 的佳作](http://blog.linux.org.tw/~jserv/archives/001840.html)
+* [Jserv's blog: 深入理解 Linux 2.6 的 initramfs 機制](http://blog.linux.org.tw/~jserv/archives/001954.html)
+* [嵌入式系统 Boot Loader 技术内幕](https://www.ibm.com/developerworks/cn/linux/l-btloader/)
