@@ -2,8 +2,9 @@
 title: Office2010-on-Ubuntu-16.04
 date: 2018-04-13 17:10:37
 tags:
+- ubuntu
 ---
-# Install Office2010 on Ubuntu 16.04
+# Office 2010 on Ubuntu 16.04
 
 - Install dependencies
     ```shell=
@@ -47,6 +48,7 @@ tags:
 
     ![](https://i.imgur.com/lGe7dnj.png =300x)
 
+- In order to avoid lnk files created inside the same directory as the file opened, create the ~/.wine/drive_c/users/xxxx/Recent directory to let office put all lnk here
 
 ---
 
@@ -61,8 +63,32 @@ KeyManagementServicePort: 1688
 
 ---
 
+Wine will create lots of shortcut related to filetype which will pollute nautilus's open with list, so there is a simple script to modify the its name
+
+```shell=
+#!/bin/sh
+files="wine-*.desktop"
+for file in $files
+do
+	# echo "$file"
+	ext=$(echo "$file"|sed "s/wine-extension-//g;s/.desktop//g")
+	# echo "EXT:$ext"
+	name=$(grep "Name=" "$file"|sed "s/Name=//g")
+	# echo "Name:$name"
+	# echo "----------------"
+	if [ "$name" = "Microsoft Excel" ] || [ "$name" = "Microsoft Word" ] \
+		|| [ "$name" = "Microsoft PowerPoint" ]
+	then
+		echo "[$file]$name->$name""_""$ext"
+		sed -i "s/$name/$name""_""$ext/" "$file"
+	fi
+done
+```
+
+---
 - [Installing Office 2010 on Ubuntu 15.04 using Wine](https://askubuntu.com/a/674693)
 - [There is no public key available for the following key IDs](https://askubuntu.com/a/766889)
 - [使用 Wine 安裝 Office 2010 於 Ubuntu 12.04](http://open-rotorman.blogspot.tw/2012/11/ubuntu-wine-office-2010-ubuntu-1204.html)
 - [Activate Office 2010 running in PlayOnLinux with a KMS server](https://askubuntu.com/a/277710)
 - [Microsoft Office (installer only)](https://appdb.winehq.org/objectManager.php?sClass=version&iId=17336)
+- [Saving files in Microsoft Word/Excel 2000-2010 creates useless .lnk files](https://bugs.winehq.org/show_bug.cgi?id=15480#c17)
