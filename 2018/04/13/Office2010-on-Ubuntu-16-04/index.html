@@ -100,21 +100,22 @@
 
 
   
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="ubuntu," />
 
 
-<meta name="description" content="¶Install Office2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install win">
+<meta name="description" content="¶Office 2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install wine3.0">
+<meta name="keywords" content="ubuntu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Office2010-on-Ubuntu-16.04">
 <meta property="og:url" content="scps950707.github.io/2018/04/13/Office2010-on-Ubuntu-16-04/index.html">
 <meta property="og:site_name" content="scps950707&#39;s blog">
-<meta property="og:description" content="¶Install Office2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install win">
+<meta property="og:description" content="¶Office 2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install wine3.0">
 <meta property="og:locale" content="zh-TW">
 <meta property="og:image" content="https://i.imgur.com/lGe7dnj.png">
-<meta property="og:updated_time" content="2018-04-14T08:56:00.153Z">
+<meta property="og:updated_time" content="2018-04-16T04:56:27.482Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Office2010-on-Ubuntu-16.04">
-<meta name="twitter:description" content="¶Install Office2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install win">
+<meta name="twitter:description" content="¶Office 2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install wine3.0">
 <meta name="twitter:image" content="https://i.imgur.com/lGe7dnj.png">
 
 
@@ -364,7 +365,7 @@
               
                 <span class="post-meta-item-text">更新於&#58;</span>
               
-              <time title="更新於" itemprop="dateModified" datetime="2018-04-14T16:56:00+08:00">2018-04-14</time>
+              <time title="更新於" itemprop="dateModified" datetime="2018-04-16T12:56:27+08:00">2018-04-16</time>
             
           </span>
 
@@ -396,7 +397,7 @@
       
 
       
-        <h1 id="install-office2010-on-ubuntu-16-04"><a class="header-anchor" href="#install-office2010-on-ubuntu-16-04">¶</a>Install Office2010 on Ubuntu 16.04</h1>
+        <h1 id="office-2010-on-ubuntu-16-04"><a class="header-anchor" href="#office-2010-on-ubuntu-16-04">¶</a>Office 2010 on Ubuntu 16.04</h1>
 <ul>
 <li>
 <p>Install dependencies</p>
@@ -440,6 +441,9 @@ KeyManagementServicePort: 1688</li>
 <li>open WORD to check</li>
 </ol>
 <hr>
+<p>Wine will create lots of shortcut related to filetype which will pollute nautilus’s open with list, so there is a simple script to modify the its name</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line">files="wine-*.desktop"</span><br><span class="line">for file in $files</span><br><span class="line">do</span><br><span class="line"><span class="meta">	#</span> echo "$file"</span><br><span class="line">	ext=$(echo "$file"|sed "s/wine-extension-//g;s/.desktop//g")</span><br><span class="line"><span class="meta">	#</span> echo "EXT:$ext"</span><br><span class="line">	name=$(grep "Name=" "$file"|sed "s/Name=//g")</span><br><span class="line"><span class="meta">	#</span> echo "Name:$name"</span><br><span class="line"><span class="meta">	#</span> echo "----------------"</span><br><span class="line">	if [ "$name" = "Microsoft Excel" ] || [ "$name" = "Microsoft Word" ] \</span><br><span class="line">		|| [ "$name" = "Microsoft PowerPoint" ]</span><br><span class="line">	then</span><br><span class="line">		echo "[$file]$name-&gt;$name""_""$ext"</span><br><span class="line">		sed -i "s/$name/$name""_""$ext/" "$file"</span><br><span class="line">	fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<hr>
 <ul>
 <li><a href="https://askubuntu.com/a/674693" target="_blank" rel="noopener">Installing Office 2010 on Ubuntu 15.04 using Wine</a></li>
 <li><a href="https://askubuntu.com/a/766889" target="_blank" rel="noopener">There is no public key available for the following key IDs</a></li>
@@ -464,6 +468,12 @@ KeyManagementServicePort: 1688</li>
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
+          
+        </div>
       
 
       
@@ -579,7 +589,9 @@ KeyManagementServicePort: 1688</li>
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">標籤</span>
                   </a>
                 </div>
@@ -634,7 +646,7 @@ KeyManagementServicePort: 1688</li>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#install-office2010-on-ubuntu-16-04"><span class="nav-number">1.</span> <span class="nav-text">¶Install Office2010 on Ubuntu 16.04</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#office-2010-on-ubuntu-16-04"><span class="nav-number">1.</span> <span class="nav-text">¶Office 2010 on Ubuntu 16.04</span></a></li></ol></div>
             
 
           </div>
