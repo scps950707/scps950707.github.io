@@ -100,30 +100,57 @@
 
 
   
-  <meta name="keywords" content="ubuntu," />
+  <meta name="keywords" content="NCTU,OSDI," />
 
 
-<meta name="description" content="¶Office 2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install wine3.0">
-<meta name="keywords" content="ubuntu">
+<meta name="description" content="¶Process Management ¶tags: NCTU OSDI ¶Traps kernel CPU提供一些指令EX.interrupt,exception 使用者可以透過軟體中斷做一些處理 x86而言是透過software interrupt:int 0x80會將eax塞入對應的服務編號讓handler找到對應的function  ¶x86	Interrupts and Linux Us">
+<meta name="keywords" content="NCTU,OSDI">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Office2010-on-Ubuntu-16.04">
-<meta property="og:url" content="scps950707.github.io/2018/04/13/Office2010-on-Ubuntu-16-04/index.html">
+<meta property="og:title" content="OSDI-Process-Management">
+<meta property="og:url" content="scps950707.github.io/2018/04/19/OSDI-Process-Management/index.html">
 <meta property="og:site_name" content="scps950707&#39;s blog">
-<meta property="og:description" content="¶Office 2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install wine3.0">
+<meta property="og:description" content="¶Process Management ¶tags: NCTU OSDI ¶Traps kernel CPU提供一些指令EX.interrupt,exception 使用者可以透過軟體中斷做一些處理 x86而言是透過software interrupt:int 0x80會將eax塞入對應的服務編號讓handler找到對應的function  ¶x86	Interrupts and Linux Us">
 <meta property="og:locale" content="zh-TW">
-<meta property="og:image" content="https://i.imgur.com/lGe7dnj.png">
-<meta property="og:updated_time" content="2018-04-16T05:37:04.642Z">
+<meta property="og:image" content="https://i.imgur.com/l5UZET5.png">
+<meta property="og:image" content="https://i.imgur.com/cQoSh0U.png">
+<meta property="og:image" content="https://i.imgur.com/loBEQqc.png">
+<meta property="og:image" content="https://i.imgur.com/QIFcncq.png">
+<meta property="og:image" content="https://i.imgur.com/eJyFpt6.png">
+<meta property="og:image" content="https://i.imgur.com/OJHwsBr.png">
+<meta property="og:image" content="https://i.imgur.com/aLj5oGI.png">
+<meta property="og:image" content="https://i.imgur.com/wubaukl.png">
+<meta property="og:image" content="https://i.imgur.com/3rVRmWf.png">
+<meta property="og:image" content="https://i.imgur.com/qWvNsAy.png">
+<meta property="og:image" content="https://i.imgur.com/2psSnDl.png">
+<meta property="og:image" content="https://i.imgur.com/tFwaVDE.png">
+<meta property="og:image" content="https://i.imgur.com/8vz90Pw.png">
+<meta property="og:image" content="https://i.imgur.com/ndqKXA2.png">
+<meta property="og:image" content="https://i.imgur.com/nn5P62n.png">
+<meta property="og:image" content="https://i.imgur.com/JjczRqJ.png">
+<meta property="og:image" content="https://i.imgur.com/pz4gtz7.png">
+<meta property="og:image" content="https://i.imgur.com/PIVLbd9.png">
+<meta property="og:image" content="https://i.imgur.com/B8IyFWE.png">
+<meta property="og:image" content="https://i.imgur.com/rSgurmg.png">
+<meta property="og:image" content="https://i.imgur.com/YMkaon9.png">
+<meta property="og:image" content="https://i.imgur.com/FGNYccX.png">
+<meta property="og:image" content="https://i.imgur.com/eBAArLD.png">
+<meta property="og:image" content="https://i.imgur.com/1FEEMp8.png">
+<meta property="og:image" content="https://i.imgur.com/jmmsvjO.png">
+<meta property="og:image" content="https://i.imgur.com/AJx63H7.png">
+<meta property="og:image" content="https://i.imgur.com/oUltFsi.png">
+<meta property="og:image" content="https://i.imgur.com/kiCRp96.png">
+<meta property="og:updated_time" content="2018-04-27T10:16:01.046Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Office2010-on-Ubuntu-16.04">
-<meta name="twitter:description" content="¶Office 2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install wine3.0">
-<meta name="twitter:image" content="https://i.imgur.com/lGe7dnj.png">
+<meta name="twitter:title" content="OSDI-Process-Management">
+<meta name="twitter:description" content="¶Process Management ¶tags: NCTU OSDI ¶Traps kernel CPU提供一些指令EX.interrupt,exception 使用者可以透過軟體中斷做一些處理 x86而言是透過software interrupt:int 0x80會將eax塞入對應的服務編號讓handler找到對應的function  ¶x86	Interrupts and Linux Us">
+<meta name="twitter:image" content="https://i.imgur.com/l5UZET5.png">
 
 
 
 
 
 
-  <link rel="canonical" href="scps950707.github.io/2018/04/13/Office2010-on-Ubuntu-16-04/"/>
+  <link rel="canonical" href="scps950707.github.io/2018/04/19/OSDI-Process-Management/"/>
 
 
 
@@ -132,7 +159,7 @@
     sidebar: "",
   };
 </script>
-  <title>Office2010-on-Ubuntu-16.04 | scps950707's blog</title>
+  <title>OSDI-Process-Management | scps950707's blog</title>
   
 
 
@@ -315,7 +342,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="scps950707.github.io/2018/04/13/Office2010-on-Ubuntu-16-04/">
+    <link itemprop="mainEntityOfPage" href="scps950707.github.io/2018/04/19/OSDI-Process-Management/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="scps950707">
@@ -332,7 +359,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Office2010-on-Ubuntu-16.04</h1>
+          <h1 class="post-title" itemprop="name headline">OSDI-Process-Management</h1>
         
 
         <div class="post-meta">
@@ -344,7 +371,7 @@
               
                 <span class="post-meta-item-text">發表於</span>
               
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-04-13T17:10:37+08:00">2018-04-13</time>
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-04-19T03:07:45+08:00">2018-04-19</time>
             
 
             
@@ -365,7 +392,7 @@
               
                 <span class="post-meta-item-text">更新於&#58;</span>
               
-              <time title="更新於" itemprop="dateModified" datetime="2018-04-16T13:37:04+08:00">2018-04-16</time>
+              <time title="更新於" itemprop="dateModified" datetime="2018-04-27T18:16:01+08:00">2018-04-27</time>
             
           </span>
 
@@ -397,63 +424,311 @@
       
 
       
-        <h1 id="office-2010-on-ubuntu-16-04"><a class="header-anchor" href="#office-2010-on-ubuntu-16-04">¶</a>Office 2010 on Ubuntu 16.04</h1>
+        <h1 id="process-management"><a class="header-anchor" href="#process-management">¶</a>Process Management</h1>
+<h6 id="tags-nctu-osdi"><a class="header-anchor" href="#tags-nctu-osdi">¶</a>tags: <code>NCTU</code> <code>OSDI</code></h6>
+<h2 id="traps-kernel"><a class="header-anchor" href="#traps-kernel">¶</a>Traps kernel</h2>
+<p>CPU提供一些指令EX.interrupt,exception<br>
+使用者可以透過軟體中斷做一些處理</p>
+<p>x86而言是透過software interrupt:int 0x80會將eax塞入對應的服務編號讓handler找到對應的function</p>
+<p><img src="https://i.imgur.com/l5UZET5.png" alt="" width="500"></p>
+<h3 id="x86-interrupts-and-linux-usage"><a class="header-anchor" href="#x86-interrupts-and-linux-usage">¶</a>x86	Interrupts and Linux Usage</h3>
+<p><img src="https://i.imgur.com/cQoSh0U.png" alt="" width="600"></p>
+<h2 id="interrupts-and-exceptions"><a class="header-anchor" href="#interrupts-and-exceptions">¶</a>Interrupts and exceptions</h2>
+<p>參考intel manual<br>
+The processor provides two mechanisms for interrupting program execution, interrupts and exceptions:</p>
 <ul>
-<li>
-<p>Install dependencies</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity</span><br></pre></td></tr></table></figure>
+<li>interrupt: an asynchronous event that is typically triggered by an I/O device.</li>
+<li>exception:a synchronous event that is generated when the processor detects one or more predefined conditions while executing an instruction. The IA-32 architecture specifies three classes of exceptions: faults, traps, and aborts.
+<ul>
+<li>A trap is an exception that is reported immediately following the execution of the trapping instruction. Traps allow execution of a program or task to be continued without loss of program continuity. The return address for the trap handler points to the instruction to be executed after the trapping instruction.</li>
+<li>A fault is an exception that can generally be corrected and that, once corrected, allows the program to be restarted with no loss of continuity. When a fault is reported, the processor restores the machine state to the state prior to the beginning of execution of the faulting instruction. The return address (saved contents of the CS and EIP registers) for the fault handler points to the faulting instruction, rather than to the instruction following the faulting instruction.</li>
+<li>An abort is an exception that does not always report the precise location of the instruction causing the exception and does not allow a restart of the program or task that caused the exception. Aborts are used to report severe errors, such as hardware errors and inconsistent or illegal values in system tables.</li>
+</ul>
 </li>
-<li>
-<p>Install <a href="https://wiki.winehq.org/Ubuntu" target="_blank" rel="noopener">wine3.0</a></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg --add-architecture i386</span><br><span class="line">wget -nc https://dl.winehq.org/wine-builds/Release.key</span><br><span class="line">sudo apt-key add Release.key</span><br><span class="line">sudo apt-add-repository &apos;deb https://dl.winehq.org/wine-builds/ubuntu/ xenial main&apos;</span><br><span class="line">sudo apt install --install-recommends winehq-stable</span><br></pre></td></tr></table></figure>
+<li><a href="https://stackoverflow.com/questions/3149175/what-is-the-difference-between-trap-and-interrupt" target="_blank" rel="noopener">What is the difference between Trap and Interrupt?</a></li>
+</ul>
+<h2 id="system-call"><a class="header-anchor" href="#system-call">¶</a>System call</h2>
+<p><img src="https://i.imgur.com/loBEQqc.png" alt="" width="500"></p>
+<p><img src="https://i.imgur.com/QIFcncq.png" alt="" width="700"></p>
+<p>CPU會先跳exception之後再跳system call</p>
+<ul>
+<li><a href="http://monkee.esy.es/?p=1349" target="_blank" rel="noopener">Linux 一次進程的執行過程及一個ELF文件頭問題</a></li>
+</ul>
+<p>切換的同時stack pointer會改指到kernel stack</p>
+<h2 id="kernel-space-vs-user-space"><a class="header-anchor" href="#kernel-space-vs-user-space">¶</a>Kernel space vs user space</h2>
+<p><img src="https://i.imgur.com/eJyFpt6.png" alt="" width="500"></p>
+<p><a href="https://manybutfinite.com/post/anatomy-of-a-program-in-memory/" target="_blank" rel="noopener">Anatomy of a Program in Memory</a></p>
+<h2 id="program-vs-process"><a class="header-anchor" href="#program-vs-process">¶</a>Program vs. Process</h2>
+<p><img src="https://i.imgur.com/OJHwsBr.png" alt="" width="550"></p>
+<h3 id="process-creation-and-destroy-in-linux"><a class="header-anchor" href="#process-creation-and-destroy-in-linux">¶</a>Process creation and destroy in Linux</h3>
+<ul>
+<li>Process creation flow
+<ul>
+<li>fork
+<ul>
+<li>creates a child process that is a copy of the current task</li>
+<li>differs from the parent only in its PID, its PPID, and certain resources</li>
+<li>copy on write</li>
+</ul>
 </li>
-<li>
-<p>download <a href="https://wiki.winehq.org/Winetricks" target="_blank" rel="noopener">winetrick</a> script</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks</span><br><span class="line">chmod +x winetricks</span><br></pre></td></tr></table></figure>
+<li>exec
+<ul>
+<li>loads a new executable into the address space and begins executing it<br>
+<img src="https://i.imgur.com/aLj5oGI.png" alt="" width="500"></li>
+</ul>
 </li>
-<li>
-<p>Initialize wine in 32-bit mode</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export WINEARCH=win32</span><br><span class="line">winecfg</span><br></pre></td></tr></table></figure>
+<li>fork()+exec()=spawn()</li>
+</ul>
 </li>
-<li>
-<p>In winecfg will lead you to install<a href="https://wiki.winehq.org/Mono" target="_blank" rel="noopener">wine-mono</a> and <a href="https://wiki.winehq.org/Gecko" target="_blank" rel="noopener">wine-gecko</a></p>
+<li>User process/thread
+<ul>
+<li>create by parent</li>
+<li>run alternatively in Kernel Mode and in User Mode</li>
+<li>run kernel function through system calls</li>
+</ul>
 </li>
-<li>
-<p>Install dotnet framework,office xml parser,windows font</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./winetricks dotnet20 msxml6 corefonts</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>Mount iso and find the path to setup.exe and don’t open immediately after install</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wine /media/scps950707/OFFICE14/setup.exe</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>Change settings for libraries after installing by running <code>winecfg</code> and add <code>gdiplus</code> and <code>riched20</code> and change all of them to native</p>
-<p><img src="https://i.imgur.com/lGe7dnj.png" alt="" width="300"></p>
-</li>
-<li>
-<p>In order to avoid lnk files created inside the same directory as the file opened, create the ~/.wine/drive_c/users/xxxx/Recent directory to let office put all lnk here</p>
+<li>Kernel process/thread
+<ul>
+<li>normally create while OS booting</li>
+<li>run only in Kernel Mode</li>
+<li>run specific kernel function</li>
+<li>use only linear addresses (will be discussed later in MM)</li>
+<li>process 0: init (executed during start_kernel())</li>
+</ul>
 </li>
 </ul>
-<hr>
-<p>The following steps are for KMS activation</p>
-<ol>
-<li>run <code>regedit</code></li>
-<li>In key <code>HKEY_LOCAL_MACHINE\Software\Microsoft\OfficeSoftwareProtectionPlatform</code> add string values according to your kms server and port<br>
-KeyManagementServiceName: <a href="http://kmserv.nctu.edu.tw" target="_blank" rel="noopener">kmserv.nctu.edu.tw</a><br>
-KeyManagementServicePort: 1688</li>
-<li>open WORD to check</li>
-</ol>
-<hr>
-<p>Wine will create lots of shortcut related to filetype which will pollute nautilus’s open with list, so there is a simple script to modify the its name</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line">files="wine-*.desktop"</span><br><span class="line">for file in $files</span><br><span class="line">do</span><br><span class="line"><span class="meta">	#</span> echo "$file"</span><br><span class="line">	ext=$(echo "$file"|sed "s/wine-extension-//g;s/.desktop//g")</span><br><span class="line"><span class="meta">	#</span> echo "EXT:$ext"</span><br><span class="line">	name=$(grep "Name=" "$file"|sed "s/Name=//g")</span><br><span class="line"><span class="meta">	#</span> echo "Name:$name"</span><br><span class="line"><span class="meta">	#</span> echo "----------------"</span><br><span class="line">	if [ "$name" = "Microsoft Excel" ] || [ "$name" = "Microsoft Word" ] \</span><br><span class="line">		|| [ "$name" = "Microsoft PowerPoint" ]</span><br><span class="line">	then</span><br><span class="line">		echo "[$file]$name-&gt;$name""_""$ext"</span><br><span class="line">		sed -i "s/$name/$name""_""$ext/" "$file"</span><br><span class="line">	fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<hr>
+<h2 id="process-descriptor"><a class="header-anchor" href="#process-descriptor">¶</a>Process descriptor</h2>
+<p><img src="https://i.imgur.com/wubaukl.png" alt="" width="150"></p>
 <ul>
-<li><a href="https://askubuntu.com/a/674693" target="_blank" rel="noopener">Installing Office 2010 on Ubuntu 15.04 using Wine</a></li>
-<li><a href="https://askubuntu.com/a/766889" target="_blank" rel="noopener">There is no public key available for the following key IDs</a></li>
-<li><a href="http://open-rotorman.blogspot.tw/2012/11/ubuntu-wine-office-2010-ubuntu-1204.html" target="_blank" rel="noopener">使用 Wine 安裝 Office 2010 於 Ubuntu 12.04</a></li>
-<li><a href="https://askubuntu.com/a/277710" target="_blank" rel="noopener">Activate Office 2010 running in PlayOnLinux with a KMS server</a></li>
-<li><a href="https://appdb.winehq.org/objectManager.php?sClass=version&amp;iId=17336" target="_blank" rel="noopener">Microsoft Office (installer only)</a></li>
-<li><a href="https://bugs.winehq.org/show_bug.cgi?id=15480#c17" target="_blank" rel="noopener">Saving files in Microsoft Word/Excel 2000-2010 creates useless .lnk files</a></li>
+<li>Where Linux store the process descriptor?
+<ul>
+<li>Of course memory</li>
+<li>In kernel space 把一塊(4k)拿來放process descriptor<br>
+<img src="https://i.imgur.com/3rVRmWf.png" alt="" width="450"></li>
+<li>Per process (lightweight process)</li>
+<li>Allocated by slab allocator (will be described in MM) – why ?</li>
+<li>Co‐located with process kernel stack</li>
+<li>What is process kernel stack?<br>
+A stack space used while process is running at kernel mode</li>
+<li>Why co‐located with process kernel stack?<br>
+Easy to access by stack pointer</li>
+</ul>
+</li>
+<li>How these process descriptors are managed
+<ul>
+<li>Who &amp; when create process descriptor?
+<ul>
+<li>“Parent” creates children &amp; process descriptor</li>
+<li>While (more precisely should be “before”) the process is created</li>
+</ul>
+</li>
+<li>Who &amp; when destroy process descriptor?
+<ul>
+<li>People destroy themselves, “Parent” or “ancestor” destroy the process descriptor</li>
+<li>While (more precisely should be “after”) the process is terminated</li>
+</ul>
+</li>
+<li>Who &amp; when use process descriptor?
+<ul>
+<li>Scheduler</li>
+<li>While scheduler is invoked</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="process-schedule-and-context-switching-in-linux"><a class="header-anchor" href="#process-schedule-and-context-switching-in-linux">¶</a>Process schedule and context switching in Linux</h2>
+<ul>
+<li>Scheduling
+<ul>
+<li>Find the next suitable process to run</li>
+</ul>
+</li>
+<li>Context switch
+<ul>
+<li>Store the context of the current process, restore the context of the next process</li>
+</ul>
+</li>
+<li>When is the scheduler be invoked
+<ul>
+<li>Direct invocation vs. Lazy invocation</li>
+<li>When returning to user‐space from a system call</li>
+<li>When returning to user‐space from an interrupt handler</li>
+<li>When an interrupt handler exits, before returning to kernel‐space</li>
+<li>If a task in the kernel explicitly calls schedule()</li>
+<li>If a task in the kernel blocks (which results in a call to schedule())</li>
+<li>Timer interrupt 通常linux早期都是每秒1000次</li>
+<li>tick kernel很耗電 現代OS已經不太採用</li>
+</ul>
+</li>
+</ul>
+<h3 id="timer-interrupt-basics"><a class="header-anchor" href="#timer-interrupt-basics">¶</a>Timer interrupt basics</h3>
+<p><img src="https://i.imgur.com/qWvNsAy.png" alt="" width="300"></p>
+<h2 id="context"><a class="header-anchor" href="#context">¶</a>Context</h2>
+<h3 id="process-context"><a class="header-anchor" href="#process-context">¶</a>Process context</h3>
+<p>進kernel space不代表真的有context &quot;switch&quot;僅是mode的轉換</p>
+<p><img src="https://i.imgur.com/2psSnDl.png" alt="" width="600"></p>
+<h3 id="interrupt-context"><a class="header-anchor" href="#interrupt-context">¶</a>Interrupt Context</h3>
+<p>遇到interrupt會保存當下部份的state(register等等)再進入interrupt context(overhead不會像context switch)那麼大</p>
+<p><img src="https://i.imgur.com/tFwaVDE.png" alt="" width="600"></p>
+<p>kernel space內能不能interrupt?<br>
+效率 vs 即時反應的取捨</p>
+<h3 id="example-flow"><a class="header-anchor" href="#example-flow">¶</a>Example Flow</h3>
+<p><img src="https://i.imgur.com/8vz90Pw.png" alt="" width="600"></p>
+<h2 id="scheduler呼叫時機"><a class="header-anchor" href="#scheduler呼叫時機">¶</a>Scheduler呼叫時機</h2>
+<ul>
+<li>When returning to user-space from a system call<br>
+EX:讀檔會需要等待,所以process自己設成idle 然後call scheduler<br>
+<img src="https://i.imgur.com/ndqKXA2.png" alt="" width="350"></li>
+<li>If a task in the kernel blocks (which results in a call to schedule())<br>
+EX:call一個system call本身需要等待被lock住的kernel resource<br>
+<img src="https://i.imgur.com/nn5P62n.png" alt="" width="350"></li>
+<li>When returning to user‐space from an interrupt handler<br>
+<img src="https://i.imgur.com/JjczRqJ.png" alt="" width="350"></li>
+<li>When an interrupt handler exits, before returning to kernel‐space<br>
+<img src="https://i.imgur.com/pz4gtz7.png" alt="" width="350"></li>
+<li>If a task in the kernel explicitly calls schedule()<br>
+<img src="https://i.imgur.com/PIVLbd9.png" alt="" width="350"></li>
+</ul>
+<h2 id="preemption"><a class="header-anchor" href="#preemption">¶</a>Preemption</h2>
+<h3 id="user-preemption"><a class="header-anchor" href="#user-preemption">¶</a>User preemption</h3>
+<p>Occurs when the kernel is in a safe state and about to return to user‐space<br>
+<img src="https://i.imgur.com/B8IyFWE.png" alt="" width="600"></p>
+<h3 id="kernel-preemption"><a class="header-anchor" href="#kernel-preemption">¶</a>Kernel preemption</h3>
+<p>Linux kernel is possible to preempt a task at any point, so long as the kernel does not hold a lock<br>
+<img src="https://i.imgur.com/rSgurmg.png" alt="" width="600"></p>
+<h3 id="preemptive-kernel"><a class="header-anchor" href="#preemptive-kernel">¶</a>Preemptive Kernel</h3>
+<ul>
+<li>Non‐preemptive kernel supports user preemption</li>
+<li>Preemptive kernel supports kernel/user preemption</li>
+<li>Kernel can be interrupted != kernel is preemptive
+<ul>
+<li>Non‐preemptive kernel, interrupt returns to interrupted process</li>
+<li>Preemptive kernel, interrupt returns to any schedulable process</li>
+</ul>
+</li>
+<li>2.4 is a non‐preemptive kernel</li>
+<li>2.6 is a preemptive kernel</li>
+<li>2.6 could disable CONFIG_PREEMPT</li>
+</ul>
+<p><img src="https://i.imgur.com/YMkaon9.png" alt="" width="600"><br>
+在被lock的過程中不能被preemption</p>
+<p><img src="https://i.imgur.com/FGNYccX.png" alt="" width="600"><br>
+沒被lock的情況下可以但是做完其他task必須回kernel繼續</p>
+<h2 id="single-core-vs-multi-core"><a class="header-anchor" href="#single-core-vs-multi-core">¶</a>Single Core vs. Multi‐core</h2>
+<p>為何CPU可以同時執行同一段code但不能同時讀取同一塊memory?<br>
+Ans:因為CPU有instruction cache<br>
+<img src="https://i.imgur.com/eBAArLD.png" alt="" width="600"></p>
+<h2 id="linux-scheduler-example"><a class="header-anchor" href="#linux-scheduler-example">¶</a>Linux scheduler example</h2>
+<p><img src="https://i.imgur.com/1FEEMp8.png" alt="" width="600"></p>
+<ul>
+<li>
+<p>Timeslice function</p>
+<table>
+<thead>
+<tr>
+<th>Type of Task</th>
+<th>Nice Value</th>
+<th>Timeslice Duration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initially created</td>
+<td>parent’s</td>
+<td>half of parent’s</td>
+</tr>
+<tr>
+<td>Minimum Priority</td>
+<td>+19</td>
+<td>5ms(MIN_TIMESLICE)</td>
+</tr>
+<tr>
+<td>Default Priority</td>
+<td>0</td>
+<td>100ms(DEF_TIMESLICE )</td>
+</tr>
+<tr>
+<td>Maximum Priority</td>
+<td>-20</td>
+<td>800ms(MAX_TIMESLICE)</td>
+</tr>
+</tbody>
+</table>
+<p><img src="https://i.imgur.com/jmmsvjO.png" alt="" width="500"></p>
+</li>
+</ul>
+<h2 id="process-schedule-and-context-switching-in-linux-v2"><a class="header-anchor" href="#process-schedule-and-context-switching-in-linux-v2">¶</a>Process schedule and context switching in Linux</h2>
+<ul>
+<li>Priority‐based scheduler</li>
+<li>Dynamic priority‐based scheduling
+<ul>
+<li>Dynamic priority
+<ul>
+<li>Normal process
+<ul>
+<li>nice value: ‐20 to +19 (larger nice values imply you are being nice to others)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Static priority
+<ul>
+<li>Real‐time process
+<ul>
+<li>0 to 99</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Total priority: 140</li>
+</ul>
+<h3 id="linux-o-1-cheduler"><a class="header-anchor" href="#linux-o-1-cheduler">¶</a>Linux O(1) cheduler</h3>
+<p>CPU利用find leading bit指令去找table中要schedule的task<br>
+原則就是先把priority高,有timeslice並且為running state的task做完<br>
+<img src="https://i.imgur.com/AJx63H7.png" alt="" width="600"></p>
+<h3 id="context-switch"><a class="header-anchor" href="#context-switch">¶</a>Context switch</h3>
+<ul>
+<li>Context switch
+<ul>
+<li>Hardware context switch
+<ul>
+<li>Task State Segment Descriptor (Old Linux)</li>
+</ul>
+</li>
+<li>Step by step context switch
+<ul>
+<li>Better control and optimize</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Context switch
+<ul>
+<li>switch_mm()
+<ul>
+<li>Switch virtual memory mapping</li>
+</ul>
+</li>
+<li>switch_to()
+<ul>
+<li>Switch processor state</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Process switching occurs only in kernel mode</li>
+<li>The contents of all registers used by a process in User Mode have already been saved</li>
+</ul>
+<h4 id="hardware-context-switch"><a class="header-anchor" href="#hardware-context-switch">¶</a>Hardware context switch</h4>
+<p><img src="https://i.imgur.com/oUltFsi.png" alt="" width="600"></p>
+<p>How x86 helps in Context Switch<br>
+<img src="https://i.imgur.com/kiCRp96.png" alt="" width="600"></p>
+<ul>
+<li><a href="http://samwho.co.uk/blog/2013/06/01/context-switching-on-x86/" target="_blank" rel="noopener">Context Switching on x86</a></li>
+<li><a href="https://wiki.osdev.org/Context_Switching" target="_blank" rel="noopener">Context Switching</a></li>
 </ul>
 
       
@@ -475,7 +750,9 @@ KeyManagementServicePort: 1688</li>
       
         <div class="post-tags">
           
-            <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
+            <a href="/tags/NCTU/" rel="tag"># NCTU</a>
+          
+            <a href="/tags/OSDI/" rel="tag"># OSDI</a>
           
         </div>
       
@@ -488,8 +765,8 @@ KeyManagementServicePort: 1688</li>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/02/OSDI-Booting-process/" rel="next" title="OSDI-Booting-process">
-                <i class="fa fa-chevron-left"></i> OSDI-Booting-process
+              <a href="/2018/04/13/Office2010-on-Ubuntu-16-04/" rel="next" title="Office2010-on-Ubuntu-16.04">
+                <i class="fa fa-chevron-left"></i> Office2010-on-Ubuntu-16.04
               </a>
             
           </div>
@@ -497,10 +774,6 @@ KeyManagementServicePort: 1688</li>
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/19/OSDI-Process-Management/" rel="prev" title="OSDI-Process-Management">
-                OSDI-Process-Management <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -654,7 +927,7 @@ KeyManagementServicePort: 1688</li>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#office-2010-on-ubuntu-16-04"><span class="nav-number">1.</span> <span class="nav-text">¶Office 2010 on Ubuntu 16.04</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#process-management"><span class="nav-number">1.</span> <span class="nav-text">¶Process Management</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-nctu-osdi"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">¶tags: NCTU OSDI</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#traps-kernel"><span class="nav-number">1.1.</span> <span class="nav-text">¶Traps kernel</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#x86-interrupts-and-linux-usage"><span class="nav-number">1.1.1.</span> <span class="nav-text">¶x86	Interrupts and Linux Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#interrupts-and-exceptions"><span class="nav-number">1.2.</span> <span class="nav-text">¶Interrupts and exceptions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#system-call"><span class="nav-number">1.3.</span> <span class="nav-text">¶System call</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kernel-space-vs-user-space"><span class="nav-number">1.4.</span> <span class="nav-text">¶Kernel space vs user space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#program-vs-process"><span class="nav-number">1.5.</span> <span class="nav-text">¶Program vs. Process</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#process-creation-and-destroy-in-linux"><span class="nav-number">1.5.1.</span> <span class="nav-text">¶Process creation and destroy in Linux</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-descriptor"><span class="nav-number">1.6.</span> <span class="nav-text">¶Process descriptor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-schedule-and-context-switching-in-linux"><span class="nav-number">1.7.</span> <span class="nav-text">¶Process schedule and context switching in Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#timer-interrupt-basics"><span class="nav-number">1.7.1.</span> <span class="nav-text">¶Timer interrupt basics</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#context"><span class="nav-number">1.8.</span> <span class="nav-text">¶Context</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#process-context"><span class="nav-number">1.8.1.</span> <span class="nav-text">¶Process context</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interrupt-context"><span class="nav-number">1.8.2.</span> <span class="nav-text">¶Interrupt Context</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#example-flow"><span class="nav-number">1.8.3.</span> <span class="nav-text">¶Example Flow</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scheduler呼叫時機"><span class="nav-number">1.9.</span> <span class="nav-text">¶Scheduler呼叫時機</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#preemption"><span class="nav-number">1.10.</span> <span class="nav-text">¶Preemption</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#user-preemption"><span class="nav-number">1.10.1.</span> <span class="nav-text">¶User preemption</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kernel-preemption"><span class="nav-number">1.10.2.</span> <span class="nav-text">¶Kernel preemption</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#preemptive-kernel"><span class="nav-number">1.10.3.</span> <span class="nav-text">¶Preemptive Kernel</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#single-core-vs-multi-core"><span class="nav-number">1.11.</span> <span class="nav-text">¶Single Core vs. Multi‐core</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux-scheduler-example"><span class="nav-number">1.12.</span> <span class="nav-text">¶Linux scheduler example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-schedule-and-context-switching-in-linux-v2"><span class="nav-number">1.13.</span> <span class="nav-text">¶Process schedule and context switching in Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linux-o-1-cheduler"><span class="nav-number">1.13.1.</span> <span class="nav-text">¶Linux O(1) cheduler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#context-switch"><span class="nav-number">1.13.2.</span> <span class="nav-text">¶Context switch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#hardware-context-switch"><span class="nav-number">1.13.2.1.</span> <span class="nav-text">¶Hardware context switch</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
