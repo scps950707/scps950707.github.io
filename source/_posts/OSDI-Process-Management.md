@@ -30,7 +30,6 @@ The processor provides two mechanisms for interrupting program execution, interr
     - A trap is an exception that is reported immediately following the execution of the trapping instruction. Traps allow execution of a program or task to be continued without loss of program continuity. The return address for the trap handler points to the instruction to be executed after the trapping instruction.
     - A fault is an exception that can generally be corrected and that, once corrected, allows the program to be restarted with no loss of continuity. When a fault is reported, the processor restores the machine state to the state prior to the beginning of execution of the faulting instruction. The return address (saved contents of the CS and EIP registers) for the fault handler points to the faulting instruction, rather than to the instruction following the faulting instruction.
     - An abort is an exception that does not always report the precise location of the instruction causing the exception and does not allow a restart of the program or task that caused the exception. Aborts are used to report severe errors, such as hardware errors and inconsistent or illegal values in system tables.
-- [What is the difference between Trap and Interrupt?](https://stackoverflow.com/questions/3149175/what-is-the-difference-between-trap-and-interrupt)
 
 
 
@@ -42,7 +41,7 @@ The processor provides two mechanisms for interrupting program execution, interr
 
 CPU會先跳exception之後再跳system call
 
-- [Linux 一次進程的執行過程及一個ELF文件頭問題](http://monkee.esy.es/?p=1349)
+- Linux 一次進程的執行過程及一個ELF文件頭問題[^1]
 
 切換的同時stack pointer會改指到kernel stack
 
@@ -50,7 +49,8 @@ CPU會先跳exception之後再跳system call
 
 ![](https://i.imgur.com/eJyFpt6.png =500x)
 
-[Anatomy of a Program in Memory](https://manybutfinite.com/post/anatomy-of-a-program-in-memory/)
+Anatomy of a Program in Memory[^2]
+
 
 
 ## Program vs. Process
@@ -236,5 +236,11 @@ CPU利用find leading bit指令去找table中要schedule的task
 How x86 helps in Context Switch
 ![](https://i.imgur.com/kiCRp96.png =600x)
 
-- [Context Switching on x86](http://samwho.co.uk/blog/2013/06/01/context-switching-on-x86/)
-- [Context Switching](https://wiki.osdev.org/Context_Switching)
+Context Switching on x86[^3]
+Context Switching[^4]
+
+
+[^1]:[Linux 一次進程的執行過程及一個ELF文件頭問題](http://monkee.esy.es/?p=1349)
+[^2]:[Anatomy of a Program in Memory](https://manybutfinite.com/post/anatomy-of-a-program-in-memory/)
+[^3]:[Context Switching on x86](http://samwho.co.uk/blog/2013/06/01/context-switching-on-x86/)
+[^4]:[Context Switching](https://wiki.osdev.org/Context_Switching)
