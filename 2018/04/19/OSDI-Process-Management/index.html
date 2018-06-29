@@ -139,7 +139,7 @@
 <meta property="og:image" content="https://i.imgur.com/AJx63H7.png">
 <meta property="og:image" content="https://i.imgur.com/oUltFsi.png">
 <meta property="og:image" content="https://i.imgur.com/kiCRp96.png">
-<meta property="og:updated_time" content="2018-04-27T10:16:01.046Z">
+<meta property="og:updated_time" content="2018-05-14T05:50:48.821Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OSDI-Process-Management">
 <meta name="twitter:description" content="¶Process Management ¶tags: NCTU OSDI ¶Traps kernel CPU提供一些指令EX.interrupt,exception 使用者可以透過軟體中斷做一些處理 x86而言是透過software interrupt:int 0x80會將eax塞入對應的服務編號讓handler找到對應的function  ¶x86	Interrupts and Linux Us">
@@ -392,7 +392,7 @@
               
                 <span class="post-meta-item-text">更新於&#58;</span>
               
-              <time title="更新於" itemprop="dateModified" datetime="2018-04-27T18:16:01+08:00">2018-04-27</time>
+              <time title="更新於" itemprop="dateModified" datetime="2018-05-14T13:50:48+08:00">2018-05-14</time>
             
           </span>
 
@@ -445,19 +445,18 @@ The processor provides two mechanisms for interrupting program execution, interr
 <li>An abort is an exception that does not always report the precise location of the instruction causing the exception and does not allow a restart of the program or task that caused the exception. Aborts are used to report severe errors, such as hardware errors and inconsistent or illegal values in system tables.</li>
 </ul>
 </li>
-<li><a href="https://stackoverflow.com/questions/3149175/what-is-the-difference-between-trap-and-interrupt" target="_blank" rel="noopener">What is the difference between Trap and Interrupt?</a></li>
 </ul>
 <h2 id="system-call"><a class="header-anchor" href="#system-call">¶</a>System call</h2>
 <p><img src="https://i.imgur.com/loBEQqc.png" alt="" width="500"></p>
 <p><img src="https://i.imgur.com/QIFcncq.png" alt="" width="700"></p>
 <p>CPU會先跳exception之後再跳system call</p>
 <ul>
-<li><a href="http://monkee.esy.es/?p=1349" target="_blank" rel="noopener">Linux 一次進程的執行過程及一個ELF文件頭問題</a></li>
+<li>Linux 一次進程的執行過程及一個ELF文件頭問題<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></li>
 </ul>
 <p>切換的同時stack pointer會改指到kernel stack</p>
 <h2 id="kernel-space-vs-user-space"><a class="header-anchor" href="#kernel-space-vs-user-space">¶</a>Kernel space vs user space</h2>
 <p><img src="https://i.imgur.com/eJyFpt6.png" alt="" width="500"></p>
-<p><a href="https://manybutfinite.com/post/anatomy-of-a-program-in-memory/" target="_blank" rel="noopener">Anatomy of a Program in Memory</a></p>
+<p>Anatomy of a Program in Memory<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <h2 id="program-vs-process"><a class="header-anchor" href="#program-vs-process">¶</a>Program vs. Process</h2>
 <p><img src="https://i.imgur.com/OJHwsBr.png" alt="" width="550"></p>
 <h3 id="process-creation-and-destroy-in-linux"><a class="header-anchor" href="#process-creation-and-destroy-in-linux">¶</a>Process creation and destroy in Linux</h3>
@@ -726,10 +725,21 @@ Ans:因為CPU有instruction cache<br>
 <p><img src="https://i.imgur.com/oUltFsi.png" alt="" width="600"></p>
 <p>How x86 helps in Context Switch<br>
 <img src="https://i.imgur.com/kiCRp96.png" alt="" width="600"></p>
-<ul>
-<li><a href="http://samwho.co.uk/blog/2013/06/01/context-switching-on-x86/" target="_blank" rel="noopener">Context Switching on x86</a></li>
-<li><a href="https://wiki.osdev.org/Context_Switching" target="_blank" rel="noopener">Context Switching</a></li>
-</ul>
+<p>Context Switching on x86<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup><br>
+Context Switching<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="http://monkee.esy.es/?p=1349" target="_blank" rel="noopener">Linux 一次進程的執行過程及一個ELF文件頭問題</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="https://manybutfinite.com/post/anatomy-of-a-program-in-memory/" target="_blank" rel="noopener">Anatomy of a Program in Memory</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="http://samwho.co.uk/blog/2013/06/01/context-switching-on-x86/" target="_blank" rel="noopener">Context Switching on x86</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><a href="https://wiki.osdev.org/Context_Switching" target="_blank" rel="noopener">Context Switching</a> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
       
     </div>
@@ -774,6 +784,10 @@ Ans:因為CPU有instruction cache<br>
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/13/Interrupt-and-exception-handling/" rel="prev" title="Interrupt and exception handling">
+                Interrupt and exception handling <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -847,7 +861,7 @@ Ans:因為CPU有instruction cache<br>
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">文章</span>
                   </a>
                 </div>

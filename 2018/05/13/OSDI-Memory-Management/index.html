@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-TW">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.5" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.5">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.0.5">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.0.5">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.5" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.0.5',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  
+  <meta name="keywords" content="NCTU,OSDI," />
+
+
+<meta name="description" content="¶Memory Management ¶tags: NCTU OSDI ¶Memory access in a program 123456int main()&amp;#123;	int a = 5;	int b = a + 6;	return 0;&amp;#125;   左側的是code segment右側的是data segment  Physical memory的方法 ¶Physical and vi">
+<meta name="keywords" content="NCTU,OSDI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OSDI-Memory Management">
+<meta property="og:url" content="scps950707.github.io/2018/05/13/OSDI-Memory-Management/index.html">
+<meta property="og:site_name" content="scps950707&#39;s blog">
+<meta property="og:description" content="¶Memory Management ¶tags: NCTU OSDI ¶Memory access in a program 123456int main()&amp;#123;	int a = 5;	int b = a + 6;	return 0;&amp;#125;   左側的是code segment右側的是data segment  Physical memory的方法 ¶Physical and vi">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://i.imgur.com/UJmcIn5.png">
+<meta property="og:image" content="https://i.imgur.com/iqOyFv1.png">
+<meta property="og:image" content="https://i.imgur.com/cfNWu3X.png">
+<meta property="og:image" content="https://i.imgur.com/I5GwDvj.png">
+<meta property="og:image" content="https://i.imgur.com/9FVXMbY.png">
+<meta property="og:image" content="https://i.imgur.com/pFeDY1w.png">
+<meta property="og:image" content="https://i.imgur.com/cRGdHQ6.png">
+<meta property="og:image" content="https://i.imgur.com/UH55MEM.png">
+<meta property="og:image" content="https://i.imgur.com/G80BBxa.png">
+<meta property="og:image" content="https://i.imgur.com/JzPvWwq.png">
+<meta property="og:image" content="https://i.imgur.com/DtYhajk.png">
+<meta property="og:image" content="https://i.imgur.com/uktAtqn.png">
+<meta property="og:image" content="https://i.imgur.com/wUJcEtp.png">
+<meta property="og:image" content="https://pdos.csail.mit.edu/6.828/2009/lec/x86_translation.svg">
+<meta property="og:image" content="https://i.imgur.com/oJIPA4W.png">
+<meta property="og:image" content="https://i.imgur.com/qTmEScL.png">
+<meta property="og:image" content="https://i.imgur.com/83Ow9Fk.png">
+<meta property="og:image" content="https://i.imgur.com/CAt79Wg.png">
+<meta property="og:image" content="https://i.imgur.com/OGfkqDG.png">
+<meta property="og:image" content="https://i.imgur.com/dtr4Q7X.png">
+<meta property="og:image" content="https://i.imgur.com/p7nHPI3.png">
+<meta property="og:image" content="https://i.imgur.com/4cYWols.png">
+<meta property="og:image" content="https://i.imgur.com/eAY5tUr.png">
+<meta property="og:image" content="https://i.imgur.com/I1IMaPq.png">
+<meta property="og:image" content="https://i.imgur.com/ZLA1DjJ.png">
+<meta property="og:image" content="https://i.imgur.com/ptYo8Sm.png">
+<meta property="og:image" content="https://i.imgur.com/HUSVUOS.png">
+<meta property="og:image" content="https://i.imgur.com/neHylkt.png">
+<meta property="og:image" content="https://i.imgur.com/Q8CHgCb.png">
+<meta property="og:image" content="https://i.imgur.com/8Y2EihT.png">
+<meta property="og:image" content="https://i.imgur.com/AXZeHiy.png">
+<meta property="og:image" content="https://i.imgur.com/mOvoD8K.png">
+<meta property="og:image" content="https://i.imgur.com/pTC0NNp.png">
+<meta property="og:image" content="https://i.imgur.com/ffhF1jl.png">
+<meta property="og:image" content="https://i.imgur.com/UZBp1Zn.png">
+<meta property="og:image" content="https://i.imgur.com/RlVSqMN.png">
+<meta property="og:image" content="https://i.imgur.com/8A7iN3b.png">
+<meta property="og:image" content="https://i.imgur.com/RO5crlF.png">
+<meta property="og:image" content="https://i.imgur.com/ORxnrGH.png">
+<meta property="og:image" content="https://i.imgur.com/PhaXlU7.png">
+<meta property="og:image" content="https://i.imgur.com/w0O7N7l.png">
+<meta property="og:image" content="https://i.imgur.com/CI55s0g.png">
+<meta property="og:image" content="https://i.imgur.com/Od9JvJM.png">
+<meta property="og:image" content="https://i.imgur.com/TG6QBOm.png">
+<meta property="og:image" content="https://i.imgur.com/b8oi6Se.png">
+<meta property="og:image" content="https://i.imgur.com/UFMsgsv.png">
+<meta property="og:image" content="https://i.imgur.com/MUWU28r.png">
+<meta property="og:image" content="https://i.imgur.com/X0EB8Ua.png">
+<meta property="og:image" content="https://i.imgur.com/7EBoA0P.png">
+<meta property="og:image" content="https://i.imgur.com/gPWCaMy.png">
+<meta property="og:image" content="https://i.imgur.com/Cz4auag.png">
+<meta property="og:image" content="https://i.imgur.com/W6ATsgx.png">
+<meta property="og:updated_time" content="2018-05-14T05:50:48.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OSDI-Memory Management">
+<meta name="twitter:description" content="¶Memory Management ¶tags: NCTU OSDI ¶Memory access in a program 123456int main()&amp;#123;	int a = 5;	int b = a + 6;	return 0;&amp;#125;   左側的是code segment右側的是data segment  Physical memory的方法 ¶Physical and vi">
+<meta name="twitter:image" content="https://i.imgur.com/UJmcIn5.png">
+
+
+
+
+
+
+  <link rel="canonical" href="scps950707.github.io/2018/05/13/OSDI-Memory-Management/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+  <title>OSDI-Memory Management | scps950707's blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">scps950707's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首頁</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />標籤</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />歸檔</a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜尋</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜尋..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/scps950707" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="scps950707.github.io/2018/05/13/OSDI-Memory-Management/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="scps950707">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="scps950707's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OSDI-Memory Management</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-05-13T17:50:37+08:00">2018-05-13</time>
+            
+
+            
+            
+              
+                
+              
+            
+
+            
+              
+              <span class="post-meta-divider">|</span>
+              
+
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新於&#58;</span>
+              
+              <time title="更新於" itemprop="dateModified" datetime="2018-05-14T13:50:48+08:00">2018-05-14</time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="memory-management"><a class="header-anchor" href="#memory-management">¶</a>Memory Management</h1>
+<h6 id="tags-nctu-osdi"><a class="header-anchor" href="#tags-nctu-osdi">¶</a>tags: <code>NCTU</code> <code>OSDI</code></h6>
+<h2 id="memory-access-in-a-program"><a class="header-anchor" href="#memory-access-in-a-program">¶</a>Memory access in a program</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	int a = 5;</span><br><span class="line">	int b = a + 6;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/UJmcIn5.png" alt="" width="450"></p>
+<p><img src="https://i.imgur.com/iqOyFv1.png" alt="" width="450"><br>
+左側的是code segment右側的是data segment</p>
+<p><img src="https://i.imgur.com/cfNWu3X.png" alt="" width="450"><br>
+Physical memory的方法</p>
+<h2 id="physical-and-virtual-address"><a class="header-anchor" href="#physical-and-virtual-address">¶</a>Physical and virtual address</h2>
+<h3 id="physical-memory-vs-virtual-memory"><a class="header-anchor" href="#physical-memory-vs-virtual-memory">¶</a>Physical Memory vs. Virtual Memory</h3>
+<ul>
+<li>Why not physical memory?</li>
+<li>Benefits for using virtual memory
+<ul>
+<li>Physical memory shared by multiple processes</li>
+<li>Isolate processes from each other</li>
+<li>Large/contiguous per process address space</li>
+<li>Use memory more efficiently<br>
+ex:Pyscial memory執行時要將所有program片段讀到memory但是virtual memory不需要在branch很多的program較有優勢</li>
+</ul>
+</li>
+<li>Disadvantage for using virtual memory
+<ul>
+<li>Expensive and slow</li>
+</ul>
+</li>
+<li>What kind of memory will you use if we only have single process?A:關掉MMU</li>
+<li>or you are the only developer of all processes, or you need very fast memory accesses?A:Physical</li>
+</ul>
+<h3 id="virtual-addresses"><a class="header-anchor" href="#virtual-addresses">¶</a>Virtual addresses</h3>
+<ul>
+<li>The memory addresses users and compiler</li>
+<li>believed</li>
+<li>The code/data are stored in physical memory</li>
+<li>The virtual memory addresses are translated into physical memory addresses (by CPU) and then CPU can access the code/data</li>
+<li>How can a CPU translate the addresses?
+<ul>
+<li>Offset? Table lookup?</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/I5GwDvj.png" alt="" width="500"></p>
+<p>instruction和data的virtual address本身都會透過CPU上的MMU去做轉換</p>
+<h2 id="segmentation"><a class="header-anchor" href="#segmentation">¶</a>Segmentation</h2>
+<p><img src="https://i.imgur.com/9FVXMbY.png" alt="" width="550"><br>
+<img src="https://i.imgur.com/pFeDY1w.png" alt="" width="500"></p>
+<ul>
+<li>轉換的table可以放
+<ul>
+<li>memory:貴 要讀取兩次 所以通常有限制大小</li>
+<li>CPU:快 可以放的不多</li>
+</ul>
+</li>
+<li>CPU會檢查d(offset)會不會超過limit,產生相對應的trap</li>
+</ul>
+<h2 id="paging"><a class="header-anchor" href="#paging">¶</a>Paging</h2>
+<p><img src="https://i.imgur.com/cRGdHQ6.png" alt="" width="500"></p>
+<p>With TLB<br>
+<img src="https://i.imgur.com/UH55MEM.png" alt="" width="500"></p>
+<h3 id="page-table-and-virtual-address"><a class="header-anchor" href="#page-table-and-virtual-address">¶</a>Page Table and Virtual Address</h3>
+<p><img src="https://i.imgur.com/G80BBxa.png" alt=""><br>
+如果要的address在TLB內的valid=0(沒有真的在memory內)就會觸發page fault,對應的handler會去memory找一塊physical memory並把這塊的address填到TLB內</p>
+<h3 id="tlb-flush-when-context-switch"><a class="header-anchor" href="#tlb-flush-when-context-switch">¶</a>TLB Flush When Context Switch</h3>
+<p><img src="https://i.imgur.com/JzPvWwq.png" alt="" width="500"><br>
+通常要清掉TLB但是也可以設計成不要清掉</p>
+<p>Q:利用TLB with PID info的技巧可以避免flush,那麼CPU multi-core時每個core有自己的TLB,kernel會不會嘗試儘量讓同個process排到同一個之前跑的core(當下可能是busy所以照樣等待)來避免switch到一個完全沒有先前TLB的core?<br>
+A:linux會抉擇,會讓process有TLB的狀況下跑更快,直到TLB剩餘的加速能力比拿到新的core全部TLB miss後重新填回來還不划算時就會切換到新的core</p>
+<p>Is the TLB shared between multiple cores?<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<h3 id="memory-cache"><a class="header-anchor" href="#memory-cache">¶</a>Memory Cache</h3>
+<ul>
+<li>Logical<br>
+<img src="https://i.imgur.com/DtYhajk.png" alt="" width="500">
+<ul>
+<li>讀0f50在logical cache中hit快速得到資料,此處為push指令</li>
+<li>沒有hit就往TLB找</li>
+<li>Pid or flush while context switch</li>
+</ul>
+</li>
+<li>Physical<br>
+<img src="https://i.imgur.com/uktAtqn.png" alt="" width="500">
+<ul>
+<li>Slow but share without flush</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/wUJcEtp.png" alt=""><br>
+架構轉換原因之一為早期系統沒有很多process所以context switch沒那麼多</p>
+<h3 id="segmentation-with-paging-x86-example"><a class="header-anchor" href="#segmentation-with-paging-x86-example">¶</a>Segmentation with paging (x86 example)</h3>
+<p><img src="https://pdos.csail.mit.edu/6.828/2009/lec/x86_translation.svg" alt="" width="600"><br>
+透過selector去table中選擇一個descripotor取得base和offset之後算出linear address在透過paging算出真正的physical address<br>
+<img src="https://i.imgur.com/oJIPA4W.png" alt=""><br>
+kernel可以看到全域的GDT的kernel code,data user透過LDT看到自己的code,data</p>
+<h3 id="user-address-space"><a class="header-anchor" href="#user-address-space">¶</a>User address space</h3>
+<ul>
+<li>4G for 32 bits processor</li>
+<li>How about kernel?
+<ul>
+<li>Kernel uses another 4G address space ?</li>
+<li>Context switch for system calls?</li>
+</ul>
+</li>
+<li>How about user and kernel share the same 4G spaces?
+<ul>
+<li>User program can use X</li>
+<li>Kernel program can use 4G‐X</li>
+</ul>
+</li>
+<li>Can user accesses the kernel data?
+<ul>
+<li>Limited by user data segment</li>
+</ul>
+</li>
+<li>Can kernel access the user data?
+<ul>
+<li>Kernel data segment covers 4G<br>
+<img src="https://i.imgur.com/qTmEScL.png" alt="" width="500"></li>
+</ul>
+</li>
+</ul>
+<h2 id="physical-memory-management"><a class="header-anchor" href="#physical-memory-management">¶</a>Physical memory management</h2>
+<p><img src="https://i.imgur.com/83Ow9Fk.png" alt="" width="500"></p>
+<ul>
+<li>Always required
+<ul>
+<li>OS has to know how physically memory is used</li>
+</ul>
+</li>
+<li>Kernel (physical contiguous and logical contiguous addresses are preferred)
+<ul>
+<li>For better performance</li>
+</ul>
+</li>
+<li>Without MMU
+<ul>
+<li>Low cost</li>
+<li>Better performance(不需要TLB 就不需要flush overhead)</li>
+<li>Deterministic performance(沒有virtual memory跟swapping space這樣access memory的時間較固定)</li>
+</ul>
+</li>
+</ul>
+<h2 id="how-to-protect-memory-access-without-mmu"><a class="header-anchor" href="#how-to-protect-memory-access-without-mmu">¶</a>How to Protect Memory Access without MMU?</h2>
+<ul>
+<li>
+<p>MPU (Memory Protection Units)</p>
+<ul>
+<li>Low cost solution for multitasking and memory access protection</li>
+<li>在CPU內部維護segment table</li>
+</ul>
+<p><img src="https://i.imgur.com/CAt79Wg.png" alt="" width="500"></p>
+</li>
+<li>
+<p>Region Attributes<br>
+<img src="https://i.imgur.com/OGfkqDG.png" alt="" width="400"></p>
+</li>
+<li>
+<p>Example 1<br>
+<img src="https://i.imgur.com/dtr4Q7X.png" alt="" width="400"></p>
+</li>
+<li>
+<p>Example 2<br>
+<img src="https://i.imgur.com/p7nHPI3.png" alt="" width="400"><br>
+<img src="https://i.imgur.com/4cYWols.png" alt="" width="400"></p>
+</li>
+<li>
+<p>What are the issues for physical memory management?</p>
+<ul>
+<li>External fragmentation</li>
+<li>Internal fragmentation</li>
+<li>Search for empty space</li>
+</ul>
+</li>
+</ul>
+<h2 id="fragmentation"><a class="header-anchor" href="#fragmentation">¶</a>Fragmentation</h2>
+<h3 id="external"><a class="header-anchor" href="#external">¶</a>External</h3>
+<p><img src="https://i.imgur.com/eAY5tUr.png" alt="" width="500"></p>
+<ul>
+<li>
+<p>如果用Memory packing去解決,在系統層面cost會太大</p>
+</li>
+<li>
+<p>uCLinux Design<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<ul>
+<li>Standard Linux allocator: allocates blocks of 2n size.
+<ul>
+<li>If 65 KB are requested, 128 KB will be reserved, and the remaining 63 KB won’t be reusable in Linux.</li>
+</ul>
+</li>
+<li>uClinux 2.4 memory allocator: kmalloc2 (aka page_alloc2)
+<ul>
+<li>Allocates blocks of 2n size until 4KB</li>
+<li>Uses 4KB pages for greater requests</li>
+<li>Stores amounts not greater than 8KB on the start of the memory, and larger ones at the end. Reduces fragmentation</li>
+<li>Not available yet for Linux 2.6.<br>
+<img src="https://i.imgur.com/I1IMaPq.png" alt="" width="150"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Frame Table</p>
+<ul>
+<li>Divide physical memory into frames<br>
+– frame size = page size (why?)<br>
+– Different frame size (why?)<br>
+<img src="https://i.imgur.com/ZLA1DjJ.png" alt="" width="300"></li>
+</ul>
+</li>
+</ul>
+<h3 id="internal"><a class="header-anchor" href="#internal">¶</a>Internal</h3>
+<p>當分配的size比frame size小時容易發生</p>
+<ul>
+<li>Frame size跟table size本身是tradeoff</li>
+<li>Different frame size (why?) 在嵌入式系統可使用此技巧,藉由runtime分析之後去做最佳分配</li>
+</ul>
+<h2 id="kernel-memory-management"><a class="header-anchor" href="#kernel-memory-management">¶</a>Kernel Memory Management</h2>
+<h3 id="requirements"><a class="header-anchor" href="#requirements">¶</a>Requirements</h3>
+<ul>
+<li>Managing memory have to spend memory
+<ul>
+<li>Balance between management overhead and waste</li>
+</ul>
+</li>
+<li>Prefer physical contiguous and logical contiguous addresses
+<ul>
+<li>For better performance</li>
+<li>Different from application memory management (logical contiguous but not necessary physical contiguous)
+<ul>
+<li>Memory utilization is more important</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Avoid external fragmentation
+<ul>
+<li>Separate large and small allocations</li>
+</ul>
+</li>
+<li>Avoid internal fragmentation
+<ul>
+<li>Multiplexing more memory block requests into one page</li>
+</ul>
+</li>
+<li>Support both large/small blocks allocations and free
+<ul>
+<li>Large memory block such as DMA</li>
+<li>Small memory block such as task structure</li>
+</ul>
+</li>
+<li>Lower empty space search complexities
+<ul>
+<li>O(1)</li>
+</ul>
+</li>
+<li>Provide APIs for kernel memory allocation/free
+<ul>
+<li>For drivers, OS codes</li>
+</ul>
+</li>
+<li>Provides APIs for realizing application memory allocation/free
+<ul>
+<li>Allocate logical contiguous but not necessary physical contiguous memory</li>
+</ul>
+</li>
+</ul>
+<h3 id="overall-architecture"><a class="header-anchor" href="#overall-architecture">¶</a>Overall Architecture</h3>
+<p><img src="https://i.imgur.com/ptYo8Sm.png" alt="" width="400"><br>
+Buddy System會去要實際的physical page,Slab Allocator目的是解決internal fragmentaion,然後最後才會mapping成user space看的VMA</p>
+<h3 id="system-components-around-slab-allocaters"><a class="header-anchor" href="#system-components-around-slab-allocaters">¶</a>System Components around Slab Allocaters</h3>
+<p><img src="https://i.imgur.com/HUSVUOS.png" alt="" width="500"><br>
+Slab Allocator本身也是呼叫Page Allocator</p>
+<h3 id="linux-memory-zones"><a class="header-anchor" href="#linux-memory-zones">¶</a>Linux Memory Zones</h3>
+<p><img src="https://i.imgur.com/neHylkt.png" alt="" width="400"><br>
+通常分法<br>
+high:user<br>
+normal:kernel<br>
+Relationship Between Nodes, Zones and Pages<br>
+<img src="https://i.imgur.com/Q8CHgCb.png" alt="" width="500"><br>
+strcut page對到physical frame</p>
+<h3 id="linux-memory-management"><a class="header-anchor" href="#linux-memory-management">¶</a>Linux Memory management</h3>
+<ol>
+<li>
+<p>Buddy allocation</p>
+<ul>
+<li>Why? O(1)</li>
+<li>適合大塊記憶體 但是internal fragmentation嚴重<br>
+<img src="https://i.imgur.com/8Y2EihT.png" alt=""><br>
+Zoned Buddy Allocator<br>
+<img src="https://i.imgur.com/AXZeHiy.png" alt=""></li>
+</ul>
+</li>
+<li>
+<p>Slab allocation</p>
+<ul>
+<li>
+<p>The Slab Allocator: An Object-Caching Kernel Memory Allocator<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+</li>
+<li>
+<p>Slab allocators in the Linux Kernel<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+</li>
+<li>
+<p>讓好幾筆allocation用同個page</p>
+</li>
+<li>
+<p>讓kernel program不用直接面對page allocator</p>
+</li>
+<li>
+<p>把常alloc/free的object(structure) cache下來</p>
+</li>
+<li>
+<p>避免每個kernel structure擺在太近造成cache line一直刷新</p>
+</li>
+<li>
+<p>適合小塊記憶體</p>
+<p><img src="https://i.imgur.com/mOvoD8K.png" alt="" width="400"><br>
+cache:同一類型的object<br>
+slabs:連續的page組成page中放相同類型object</p>
+</li>
+<li>
+<p>Page to Cache and Slab Relationship<br>
+<img src="https://i.imgur.com/pTC0NNp.png" alt="" width="300"></p>
+</li>
+<li>
+<p>Slab With Descriptor On‐Slab<br>
+<img src="https://i.imgur.com/ffhF1jl.png" alt="" width="450"></p>
+</li>
+<li>
+<p><a href="https://github.com/torvalds/linux/blob/master/mm/slab.c#L37" target="_blank" rel="noopener">slab.c</a></p>
+</li>
+<li>
+<p>In order to reduce fragmentation, the slabs are sorted in 3 groups:</p>
+<ul>
+<li>full slabs with 0 free objects</li>
+<li>partial slabs</li>
+<li>empty slabs with no allocated objects</li>
+</ul>
+</li>
+<li>
+<p>If partial slabs exist, then new allocations come from these slabs, otherwise from empty slabs or new slabs are allocated.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>kmalloc</p>
+<ul>
+<li>similar to that of user‐space’s familiar malloc() routine</li>
+<li>byte‐sized chunks</li>
+<li>memory allocated is physically contiguous</li>
+<li>Through slab allocator</li>
+</ul>
+</li>
+<li>
+<p>vmalloc</p>
+<ul>
+<li>virtually contiguous and not necessarily physically contiguous</li>
+<li>user‐space allocation function works</li>
+<li>allocating potentially non-contiguous chunks of physical memory and “fixing up” the page tables to map the memory into a contiguous chunk of the logical address space</li>
+</ul>
+</li>
+</ol>
+<h2 id="process-address-space"><a class="header-anchor" href="#process-address-space">¶</a>Process address space</h2>
+<ul>
+<li>How The Kernel Manages Your Memory<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></li>
+<li>Virtual Addresses Before/After Context Switches<br>
+<img src="https://i.imgur.com/UZBp1Zn.png" alt="" width="500"></li>
+<li>Per Process Address Space<br>
+<img src="https://i.imgur.com/RlVSqMN.png" alt="" width="200" height="250"></li>
+<li>task_struct and mm_struct<br>
+<img src="https://i.imgur.com/8A7iN3b.png" alt="" width="500"></li>
+<li>VMA<br>
+當使用library時可能會觸發page fault來把dll讀進memory<br>
+<img src="https://i.imgur.com/RO5crlF.png" alt="" width="500"></li>
+<li>Memory Access<br>
+<img src="https://i.imgur.com/ORxnrGH.png" alt="" width="400"></li>
+<li>Page Fault<br>
+<img src="https://i.imgur.com/PhaXlU7.png" alt="" width="400"><br>
+<img src="https://i.imgur.com/w0O7N7l.png" alt="" width="400"></li>
+</ul>
+<h3 id="linux-kernel-thread-and-mm-struct"><a class="header-anchor" href="#linux-kernel-thread-and-mm-struct">¶</a>Linux Kernel Thread and mm_struct</h3>
+<ul>
+<li>Kernel threads do not have a process address space
+<ul>
+<li>mm field of a kernel thread’s process descriptor is NULL</li>
+</ul>
+</li>
+<li>Lack of an address space is fine, because kernel threads do not ever access any user‐space memory</li>
+<li>Better performance</li>
+</ul>
+<h2 id="management-regions"><a class="header-anchor" href="#management-regions">¶</a>Management Regions</h2>
+<ul>
+<li>
+<p>mm_struct, vm_area_struct, and page<br>
+<img src="https://i.imgur.com/CI55s0g.png" alt=""></p>
+</li>
+<li>
+<p>VMA, Page and Frame<br>
+<img src="https://i.imgur.com/Od9JvJM.png" alt=""></p>
+</li>
+<li>
+<p>Memory Region<br>
+<img src="https://i.imgur.com/TG6QBOm.png" alt="" width="500"></p>
+</li>
+<li>
+<p>Red-Black Tree</p>
+<ul>
+<li>O(logn)</li>
+<li>Compare to AVL tree<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>
+<ul>
+<li>Search slower</li>
+<li>Insert and delete faster</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/b8oi6Se.png" alt=""></p>
+</li>
+<li>
+<p>Enlarge VMA<br>
+<img src="https://i.imgur.com/UFMsgsv.png" alt="" width="450"></p>
+</li>
+</ul>
+<h2 id="memory-mapping"><a class="header-anchor" href="#memory-mapping">¶</a>Memory mapping</h2>
+<p><img src="https://i.imgur.com/MUWU28r.png" alt=""></p>
+<ul>
+<li>
+<p>File mapping and memory layout<br>
+<img src="https://i.imgur.com/X0EB8Ua.png" alt=""></p>
+</li>
+<li>
+<p>Data Structure for File Memory Mapping<br>
+<img src="https://i.imgur.com/7EBoA0P.png" alt=""></p>
+</li>
+</ul>
+<h3 id="two-types-of-memory-mapping"><a class="header-anchor" href="#two-types-of-memory-mapping">¶</a>Two Types of Memory Mapping</h3>
+<ul>
+<li>A file mapping maps a memory region to a region of a file
+<ul>
+<li>backing store = file</li>
+<li>as long as the mapping is established, the content of the file can be read from or written to using direct memory access (“as if they were variables”)</li>
+</ul>
+</li>
+<li>An anonymous mappings maps a memory region to a fresh “virtual” memory area filled with 0
+<ul>
+<li>backing store = zero‐ed memory area</li>
+</ul>
+</li>
+</ul>
+<h3 id="having-memory-mapped-pages-in-common"><a class="header-anchor" href="#having-memory-mapped-pages-in-common">¶</a>Having memory mapped pages in common</h3>
+<ul>
+<li>Thanks to virtual memory management, different processes can have mapped pages in common</li>
+<li>More precisely, mapped pages in different processes can refer to physical memory pages that have the same backing store</li>
+<li>That can happen in two ways:
+<ul>
+<li>through fork, as memory mappings are inherited by children</li>
+<li>when multiple processes map the same region of a file</li>
+</ul>
+</li>
+</ul>
+<h3 id="shared-vs-private-mappings"><a class="header-anchor" href="#shared-vs-private-mappings">¶</a>Shared vs private mappings</h3>
+<ul>
+<li>With mapped pages in common, the involved processes might see changes performed by others to mapped pages in common, depending on whether the mapping is:
+<ul>
+<li>private mapping in this case modifications are not visible to other processes.
+<ul>
+<li>pages are initially the same, but modification are not shared, as it happens with copy‐on‐write memory after fork</li>
+<li>private mappings are also known as copy‐on‐write mappings</li>
+</ul>
+</li>
+<li>shared mapping in this case modifications to mapped pages in common are visible to all involved processes
+<ul>
+<li>pages are not copied‐on‐write</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="shared-file-mapping"><a class="header-anchor" href="#shared-file-mapping">¶</a>Shared file mapping</h2>
+<ul>
+<li>
+<p>Effects</p>
+<ul>
+<li>processes mapping the same region of a file share physical memory frames
+<ul>
+<li>more precisely: they have virtual memory pages that map to the same physical memory frames</li>
+</ul>
+</li>
+<li>additionally, the involved physical frames have the mapped file as ultimate backing store
+<ul>
+<li>modifications to the (shared) physical frames are saved to the mapped file on disk</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Use cases</p>
+<ul>
+<li>memory‐mapped I/O, as an alternative to read/write
+<ul>
+<li>as in the case of private file mapping, but here it works for both reading and writing data</li>
+</ul>
+</li>
+<li>Inter‐process communication, with the following characteristics
+<ul>
+<li>data‐transfer (not byte stream)</li>
+<li>with filesystem persistence</li>
+<li>among unrelated processes<br>
+<img src="https://i.imgur.com/gPWCaMy.png" alt=""></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="memory-mapped-i-o"><a class="header-anchor" href="#memory-mapped-i-o">¶</a>Memory-mapped I/O</h2>
+<ul>
+<li>Given that
+<ul>
+<li>memory content is initialized from file</li>
+<li>changes to memory are reflected to file</li>
+</ul>
+</li>
+<li>We can perform I/O by simply changing bytes of memory.</li>
+<li>Access to file mappings is less intuitive than sequential read/write operations
+<ul>
+<li>the mental model is that of working on your data as a huge byte array (which is what memory is, after all)</li>
+<li>a best practice to follow is that of defining struct‐s that correspond to elements stored in the mapping, and copy them around with memcpy &amp; co</li>
+</ul>
+</li>
+</ul>
+<h3 id="advantages"><a class="header-anchor" href="#advantages">¶</a>Advantages</h3>
+<ul>
+<li>performance gain: 1 memory copy<br>
+with read/write I/O each action involves 2 memory copies:
+<ol>
+<li>between user‐space and kernel buffers</li>
+<li>between kernel and memory(buffer) of disk</li>
+</ol>
+</li>
+<li>buffers and the I/O device
+<ul>
+<li>with memory‐mapped I/O only the 2nd copy remains</li>
+<li>flash exercise: how many copies for standard I/O?</li>
+</ul>
+</li>
+<li>performance gain: no context switch
+<ul>
+<li>no syscall and no context switch is involved in accessing mapped memory</li>
+<li>page faults are possible, though reduced memory usage</li>
+<li>we avoid user‐space buffers ! less memory needed</li>
+<li>if memory mapped region is shared, we use only one set of</li>
+</ul>
+</li>
+<li>buffers for all processes seeking is simplified
+<ul>
+<li>no need of explicit lseek, just pointer manipulation</li>
+</ul>
+</li>
+</ul>
+<h3 id="disadvantages"><a class="header-anchor" href="#disadvantages">¶</a>Disadvantages</h3>
+<ul>
+<li>memory garbage
+<ul>
+<li>the size of mapped regions is a multiple of system page size</li>
+<li>mapping regions which are way smaller than that can result in a significant waste of memory</li>
+</ul>
+</li>
+<li>memory mapping must fit in the process address space
+<ul>
+<li>on 32 bits systems, a large number of mappings of various sizes might result in memory fragmentation</li>
+<li>it then becomes harder to find continuous space to grant large memory mappings</li>
+<li>the problem is substantially diminished on 64 bits systems</li>
+</ul>
+</li>
+<li>there is kernel overhead in maintaining mappings
+<ul>
+<li>for small mappings, the overhead can dominate the advantages</li>
+<li>memory mapped I/O is best used with large files and random access</li>
+</ul>
+</li>
+</ul>
+<h2 id="page-cache"><a class="header-anchor" href="#page-cache">¶</a>Page Cache</h2>
+<p><img src="https://i.imgur.com/Cz4auag.png" alt="" width="500"></p>
+<p><img src="https://i.imgur.com/W6ATsgx.png" alt=""></p>
+<hr>
+<ul>
+<li><a href="http://www.cs.cornell.edu/courses/cs4410/2016fa/slides/13-memory.pdf" target="_blank" rel="noopener">Main Memory CS 4410, Operating Systems Fall 2016 Cornell University</a></li>
+<li><a href="http://www.cs.columbia.edu/~junfeng/13fa-w4118/lectures/l20-adv-mm.pdf" target="_blank" rel="noopener">W4118: Linux memory management</a></li>
+<li><a href="https://upsilon.cc/~zack/teaching/1112/progsyst/cours-09.pdf" target="_blank" rel="noopener">Programmation Systèmes Memory Mapping, Stefano Zacchiroli</a></li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://stackoverflow.com/questions/34437371/is-the-tlb-shared-between-multiple-cores" target="_blank" rel="noopener">Is the TLB shared between multiple cores?</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="https://bootlin.com/doc/legacy/uclinux/uclinux_introduction.pdf" target="_blank" rel="noopener">Introduction to uClinux</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="https://people.eecs.berkeley.edu/~kubitron/cs194-24/hand-outs/bonwick_slab.pdf" target="_blank" rel="noopener">The Slab Allocator: An Object-Caching Kernel Memory Allocator</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><a href="https://events.static.linuxfound.org/sites/events/files/slides/slaballocators.pdf" target="_blank" rel="noopener">Slab allocators in the Linux Kernel</a> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p><a href="https://manybutfinite.com/post/how-the-kernel-manages-your-memory/" target="_blank" rel="noopener">How The Kernel Manages Your Memory</a> <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p><a href="https://stackoverflow.com/a/23277366" target="_blank" rel="noopener">Red black tree over avl tree</a> <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NCTU/" rel="tag"># NCTU</a>
+          
+            <a href="/tags/OSDI/" rel="tag"># OSDI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/13/Interrupt-and-exception-handling/" rel="next" title="Interrupt and exception handling">
+                <i class="fa fa-chevron-left"></i> Interrupt and exception handling
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概要
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">scps950707</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">文章</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">標籤</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/scps950707" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:scps950707@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/scps950707" target="_blank" title="FB Page"><i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#memory-management"><span class="nav-number">1.</span> <span class="nav-text">¶Memory Management</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-nctu-osdi"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">¶tags: NCTU OSDI</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#memory-access-in-a-program"><span class="nav-number">1.1.</span> <span class="nav-text">¶Memory access in a program</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#physical-and-virtual-address"><span class="nav-number">1.2.</span> <span class="nav-text">¶Physical and virtual address</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#physical-memory-vs-virtual-memory"><span class="nav-number">1.2.1.</span> <span class="nav-text">¶Physical Memory vs. Virtual Memory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#virtual-addresses"><span class="nav-number">1.2.2.</span> <span class="nav-text">¶Virtual addresses</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#segmentation"><span class="nav-number">1.3.</span> <span class="nav-text">¶Segmentation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#paging"><span class="nav-number">1.4.</span> <span class="nav-text">¶Paging</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#page-table-and-virtual-address"><span class="nav-number">1.4.1.</span> <span class="nav-text">¶Page Table and Virtual Address</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tlb-flush-when-context-switch"><span class="nav-number">1.4.2.</span> <span class="nav-text">¶TLB Flush When Context Switch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-cache"><span class="nav-number">1.4.3.</span> <span class="nav-text">¶Memory Cache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#segmentation-with-paging-x86-example"><span class="nav-number">1.4.4.</span> <span class="nav-text">¶Segmentation with paging (x86 example)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#user-address-space"><span class="nav-number">1.4.5.</span> <span class="nav-text">¶User address space</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#physical-memory-management"><span class="nav-number">1.5.</span> <span class="nav-text">¶Physical memory management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how-to-protect-memory-access-without-mmu"><span class="nav-number">1.6.</span> <span class="nav-text">¶How to Protect Memory Access without MMU?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fragmentation"><span class="nav-number">1.7.</span> <span class="nav-text">¶Fragmentation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#external"><span class="nav-number">1.7.1.</span> <span class="nav-text">¶External</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#internal"><span class="nav-number">1.7.2.</span> <span class="nav-text">¶Internal</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kernel-memory-management"><span class="nav-number">1.8.</span> <span class="nav-text">¶Kernel Memory Management</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#requirements"><span class="nav-number">1.8.1.</span> <span class="nav-text">¶Requirements</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#overall-architecture"><span class="nav-number">1.8.2.</span> <span class="nav-text">¶Overall Architecture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#system-components-around-slab-allocaters"><span class="nav-number">1.8.3.</span> <span class="nav-text">¶System Components around Slab Allocaters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux-memory-zones"><span class="nav-number">1.8.4.</span> <span class="nav-text">¶Linux Memory Zones</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux-memory-management"><span class="nav-number">1.8.5.</span> <span class="nav-text">¶Linux Memory management</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-address-space"><span class="nav-number">1.9.</span> <span class="nav-text">¶Process address space</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linux-kernel-thread-and-mm-struct"><span class="nav-number">1.9.1.</span> <span class="nav-text">¶Linux Kernel Thread and mm_struct</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#management-regions"><span class="nav-number">1.10.</span> <span class="nav-text">¶Management Regions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#memory-mapping"><span class="nav-number">1.11.</span> <span class="nav-text">¶Memory mapping</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#two-types-of-memory-mapping"><span class="nav-number">1.11.1.</span> <span class="nav-text">¶Two Types of Memory Mapping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#having-memory-mapped-pages-in-common"><span class="nav-number">1.11.2.</span> <span class="nav-text">¶Having memory mapped pages in common</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shared-vs-private-mappings"><span class="nav-number">1.11.3.</span> <span class="nav-text">¶Shared vs private mappings</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shared-file-mapping"><span class="nav-number">1.12.</span> <span class="nav-text">¶Shared file mapping</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#memory-mapped-i-o"><span class="nav-number">1.13.</span> <span class="nav-text">¶Memory-mapped I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#advantages"><span class="nav-number">1.13.1.</span> <span class="nav-text">¶Advantages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#disadvantages"><span class="nav-number">1.13.2.</span> <span class="nav-text">¶Disadvantages</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#page-cache"><span class="nav-number">1.14.</span> <span class="nav-text">¶Page Cache</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">scps950707</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.0.5</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.5"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.5"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.5"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.5"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.5"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.5"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.5"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

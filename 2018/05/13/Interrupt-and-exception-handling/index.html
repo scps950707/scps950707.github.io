@@ -100,30 +100,34 @@
 
 
   
-  <meta name="keywords" content="ubuntu," />
+  <meta name="keywords" content="OSDI,note," />
 
 
-<meta name="description" content="¶Office 2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install wine3.0">
-<meta name="keywords" content="ubuntu">
+<meta name="description" content="¶Interrupt and exception handling This note is based on intel software development manual Volume 3A chap 6 ¶Interrupt and exception overview  Interrupts occur at random times during the execution of a">
+<meta name="keywords" content="OSDI,note">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Office2010-on-Ubuntu-16.04">
-<meta property="og:url" content="scps950707.github.io/2018/04/13/Office2010-on-Ubuntu-16-04/index.html">
+<meta property="og:title" content="Interrupt and exception handling">
+<meta property="og:url" content="scps950707.github.io/2018/05/13/Interrupt-and-exception-handling/index.html">
 <meta property="og:site_name" content="scps950707&#39;s blog">
-<meta property="og:description" content="¶Office 2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install wine3.0">
+<meta property="og:description" content="¶Interrupt and exception handling This note is based on intel software development manual Volume 3A chap 6 ¶Interrupt and exception overview  Interrupts occur at random times during the execution of a">
 <meta property="og:locale" content="zh-TW">
-<meta property="og:image" content="https://i.imgur.com/lGe7dnj.png">
-<meta property="og:updated_time" content="2018-04-16T05:37:04.642Z">
+<meta property="og:image" content="https://i.imgur.com/mr3BGdh.png">
+<meta property="og:image" content="https://i.imgur.com/2Cxiovn.png">
+<meta property="og:image" content="https://i.imgur.com/5TXaMZs.png">
+<meta property="og:image" content="https://i.imgur.com/H3a5tMC.png">
+<meta property="og:image" content="https://i.imgur.com/cz81uJd.png">
+<meta property="og:updated_time" content="2018-05-14T05:50:48.821Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Office2010-on-Ubuntu-16.04">
-<meta name="twitter:description" content="¶Office 2010 on Ubuntu 16.04   Install dependencies   1sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity   Install wine3.0">
-<meta name="twitter:image" content="https://i.imgur.com/lGe7dnj.png">
+<meta name="twitter:title" content="Interrupt and exception handling">
+<meta name="twitter:description" content="¶Interrupt and exception handling This note is based on intel software development manual Volume 3A chap 6 ¶Interrupt and exception overview  Interrupts occur at random times during the execution of a">
+<meta name="twitter:image" content="https://i.imgur.com/mr3BGdh.png">
 
 
 
 
 
 
-  <link rel="canonical" href="scps950707.github.io/2018/04/13/Office2010-on-Ubuntu-16-04/"/>
+  <link rel="canonical" href="scps950707.github.io/2018/05/13/Interrupt-and-exception-handling/"/>
 
 
 
@@ -132,7 +136,7 @@
     sidebar: "",
   };
 </script>
-  <title>Office2010-on-Ubuntu-16.04 | scps950707's blog</title>
+  <title>Interrupt and exception handling | scps950707's blog</title>
   
 
 
@@ -315,7 +319,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="scps950707.github.io/2018/04/13/Office2010-on-Ubuntu-16-04/">
+    <link itemprop="mainEntityOfPage" href="scps950707.github.io/2018/05/13/Interrupt-and-exception-handling/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="scps950707">
@@ -332,7 +336,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Office2010-on-Ubuntu-16.04</h1>
+          <h1 class="post-title" itemprop="name headline">Interrupt and exception handling</h1>
         
 
         <div class="post-meta">
@@ -344,7 +348,7 @@
               
                 <span class="post-meta-item-text">發表於</span>
               
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-04-13T17:10:37+08:00">2018-04-13</time>
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-05-13T16:38:39+08:00">2018-05-13</time>
             
 
             
@@ -365,7 +369,7 @@
               
                 <span class="post-meta-item-text">更新於&#58;</span>
               
-              <time title="更新於" itemprop="dateModified" datetime="2018-04-16T13:37:04+08:00">2018-04-16</time>
+              <time title="更新於" itemprop="dateModified" datetime="2018-05-14T13:50:48+08:00">2018-05-14</time>
             
           </span>
 
@@ -397,63 +401,111 @@
       
 
       
-        <h1 id="office-2010-on-ubuntu-16-04"><a class="header-anchor" href="#office-2010-on-ubuntu-16-04">¶</a>Office 2010 on Ubuntu 16.04</h1>
+        <h1 id="interrupt-and-exception-handling"><a class="header-anchor" href="#interrupt-and-exception-handling">¶</a>Interrupt and exception handling</h1>
+<p>This note is based on <a href="https://software.intel.com/sites/default/files/managed/39/c5/325462-sdm-vol-1-2abcd-3abcd.pdf" target="_blank" rel="noopener">intel software development manual</a> Volume 3A chap 6</p>
+<h2 id="interrupt-and-exception-overview"><a class="header-anchor" href="#interrupt-and-exception-overview">¶</a>Interrupt and exception overview</h2>
 <ul>
-<li>
-<p>Install dependencies</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install winbind mesa-utils mesa-utils-extra libgl1-mesa-glx:i386 libgl1-mesa-dev cabextract p7zip unzip wget zenity</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>Install <a href="https://wiki.winehq.org/Ubuntu" target="_blank" rel="noopener">wine3.0</a></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg --add-architecture i386</span><br><span class="line">wget -nc https://dl.winehq.org/wine-builds/Release.key</span><br><span class="line">sudo apt-key add Release.key</span><br><span class="line">sudo apt-add-repository &apos;deb https://dl.winehq.org/wine-builds/ubuntu/ xenial main&apos;</span><br><span class="line">sudo apt install --install-recommends winehq-stable</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>download <a href="https://wiki.winehq.org/Winetricks" target="_blank" rel="noopener">winetrick</a> script</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks</span><br><span class="line">chmod +x winetricks</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>Initialize wine in 32-bit mode</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export WINEARCH=win32</span><br><span class="line">winecfg</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>In winecfg will lead you to install<a href="https://wiki.winehq.org/Mono" target="_blank" rel="noopener">wine-mono</a> and <a href="https://wiki.winehq.org/Gecko" target="_blank" rel="noopener">wine-gecko</a></p>
-</li>
-<li>
-<p>Install dotnet framework,office xml parser,windows font</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./winetricks dotnet20 msxml6 corefonts</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>Mount iso and find the path to setup.exe and don’t open immediately after install</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wine /media/scps950707/OFFICE14/setup.exe</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>Change settings for libraries after installing by running <code>winecfg</code> and add <code>gdiplus</code> and <code>riched20</code> and change all of them to native</p>
-<p><img src="https://i.imgur.com/lGe7dnj.png" alt="" width="300"></p>
-</li>
-<li>
-<p>In order to avoid lnk files created inside the same directory as the file opened, create the ~/.wine/drive_c/users/xxxx/Recent directory to let office put all lnk here</p>
+<li>Interrupts occur at random times during the execution of a program, in response to signals from hardware. System hardware uses interrupts to handle events external to the processor, such as requests to service peripheral devices. Software can also generate interrupts by executing the <code>INT n</code> instruction.</li>
+<li>Exceptions occur when the processor detects an error condition while executing an instruction
+<ul>
+<li>division by zero</li>
+<li>protection violations</li>
+<li>page faults</li>
+<li>internal machine faults</li>
+</ul>
 </li>
 </ul>
-<hr>
-<p>The following steps are for KMS activation</p>
-<ol>
-<li>run <code>regedit</code></li>
-<li>In key <code>HKEY_LOCAL_MACHINE\Software\Microsoft\OfficeSoftwareProtectionPlatform</code> add string values according to your kms server and port<br>
-KeyManagementServiceName: <a href="http://kmserv.nctu.edu.tw" target="_blank" rel="noopener">kmserv.nctu.edu.tw</a><br>
-KeyManagementServicePort: 1688</li>
-<li>open WORD to check</li>
-</ol>
-<hr>
-<p>Wine will create lots of shortcut related to filetype which will pollute nautilus’s open with list, so there is a simple script to modify the its name</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line">files="wine-*.desktop"</span><br><span class="line">for file in $files</span><br><span class="line">do</span><br><span class="line"><span class="meta">	#</span> echo "$file"</span><br><span class="line">	ext=$(echo "$file"|sed "s/wine-extension-//g;s/.desktop//g")</span><br><span class="line"><span class="meta">	#</span> echo "EXT:$ext"</span><br><span class="line">	name=$(grep "Name=" "$file"|sed "s/Name=//g")</span><br><span class="line"><span class="meta">	#</span> echo "Name:$name"</span><br><span class="line"><span class="meta">	#</span> echo "----------------"</span><br><span class="line">	if [ "$name" = "Microsoft Excel" ] || [ "$name" = "Microsoft Word" ] \</span><br><span class="line">		|| [ "$name" = "Microsoft PowerPoint" ]</span><br><span class="line">	then</span><br><span class="line">		echo "[$file]$name-&gt;$name""_""$ext"</span><br><span class="line">		sed -i "s/$name/$name""_""$ext/" "$file"</span><br><span class="line">	fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<hr>
+<h2 id="exception-and-interrupt-vectors"><a class="header-anchor" href="#exception-and-interrupt-vectors">¶</a>Exception and interrupt vectors</h2>
 <ul>
-<li><a href="https://askubuntu.com/a/674693" target="_blank" rel="noopener">Installing Office 2010 on Ubuntu 15.04 using Wine</a></li>
-<li><a href="https://askubuntu.com/a/766889" target="_blank" rel="noopener">There is no public key available for the following key IDs</a></li>
-<li><a href="http://open-rotorman.blogspot.tw/2012/11/ubuntu-wine-office-2010-ubuntu-1204.html" target="_blank" rel="noopener">使用 Wine 安裝 Office 2010 於 Ubuntu 12.04</a></li>
-<li><a href="https://askubuntu.com/a/277710" target="_blank" rel="noopener">Activate Office 2010 running in PlayOnLinux with a KMS server</a></li>
-<li><a href="https://appdb.winehq.org/objectManager.php?sClass=version&amp;iId=17336" target="_blank" rel="noopener">Microsoft Office (installer only)</a></li>
-<li><a href="https://bugs.winehq.org/show_bug.cgi?id=15480#c17" target="_blank" rel="noopener">Saving files in Microsoft Word/Excel 2000-2010 creates useless .lnk files</a></li>
+<li>The processor uses the vector number assigned to an exception or interrupt as an index into the interrupt descriptor table (IDT). The table provides the entry point to an exception or interrupt handler</li>
+<li>0 through 31 are reserved</li>
+<li>32 to 255 are designated as user-defined interrupts</li>
+</ul>
+<p><img src="https://i.imgur.com/mr3BGdh.png" alt="" width="500"></p>
+<h2 id="sources-of-interrupts"><a class="header-anchor" href="#sources-of-interrupts">¶</a>Sources of interrupts</h2>
+<ul>
+<li>External Interrupts<br>
+External interrupts are received through pins on the processor or through the local APIC(Advanced Programmable Interrupt Controller)</li>
+<li>Maskable Hardware Interrupts<br>
+Any external interrupt that is delivered to the processor by means of the INTR pin or through the local APIC is called a maskable hardware interrupt</li>
+<li>Software-Generated Interrupts<br>
+The <code>INT n</code> instruction permits interrupts to be generated from within software by supplying an interrupt vector<br>
+number as an operand. For example, the INT 35 instruction forces an implicit call to the interrupt handler for interrupt 35.</li>
+</ul>
+<h2 id="source-of-exceptions"><a class="header-anchor" href="#source-of-exceptions">¶</a>Source of exceptions</h2>
+<ul>
+<li>Processor-detected program-error exceptions</li>
+<li>Software-generated exceptions<br>
+The <code>INTO</code>, <code>INT 3</code>, and <code>BOUND</code> instructions permit exceptions to be generated in software. These instructions allow checks for exception conditions to be performed at points in the instruction stream. For example,<code>INT 3</code> causes a breakpoint exception to be generated.</li>
+<li>Machine-check exceptions</li>
+</ul>
+<h2 id="exception-classifications"><a class="header-anchor" href="#exception-classifications">¶</a>Exception classifications</h2>
+<ul>
+<li>Faults<br>
+A fault is an exception that can generally be corrected and that, once corrected, allows the program to be restarted with no loss of continuity. When a fault is reported, the processor restores the machine state to the state prior to the beginning of execution of the faulting instruction. The return address (saved contents of the CS and EIP registers) for the fault handler points to the <strong>faulting instruction</strong>, rather than to the instruction following the faulting instruction.</li>
+<li>Traps<br>
+A trap is an exception that is reported immediately following the execution of the trapping instruction. Traps allow execution of a program or task to be continued without loss of program continuity. The return address for the trap handler points to the <strong>instruction to be executed after the trapping instruction</strong>.
+<ul>
+<li>If a trap is detected during an instruction which transfers execution, the return instruction pointer reflects the transfer.</li>
+<li>If a trap is detected while executing a <code>JMP</code> instruction, the return instruction pointer points to the destination of the <code>JMP</code> instruction, not to the next address past the <code>JMP</code> instruction.</li>
+<li>overflow exception is a trap exception. Here, the return instruction pointer points to the instruction following the <code>INTO</code> instruction that tested EFLAGS.OF (overflow) flag. The trap handler for this exception resolves the overflow condition. Upon return from the trap handler, program or task execution continues at the instruction following the <code>INTO</code> instruction.</li>
+</ul>
+</li>
+<li>Aborts<br>
+An abort is an exception that does not always report the precise location of the instruction causing the exception and does not allow a restart of the program or task that caused the exception. Aborts are used to report severe errors, such as hardware errors and inconsistent or illegal values in system tables.</li>
+</ul>
+<h2 id="enabling-and-disabling-interrupts"><a class="header-anchor" href="#enabling-and-disabling-interrupts">¶</a>Enabling and disabling interrupts</h2>
+<ul>
+<li>The processor inhibits the generation of some interrupts, depending on the state of the processor and of the <code>IF</code> and <code>RF</code> flags in the <code>EFLAGS</code> register</li>
+<li>When the <code>IF</code> flag is clear, the processor inhibits interrupts delivered to the <code>INTR</code> pin or through the local APIC from generating an internal interrupt request</li>
+<li>when the <code>IF</code> flag is set, interrupts delivered to the <code>INTR</code> or through the local APIC pin are processed as normal external interrupts.</li>
+<li>The <code>IF</code> flag does not affect non-maskable interrupts (NMIs) delivered to the NMI pin or delivery mode NMI messages delivered through the local APIC</li>
+<li>The <code>IF</code> flag can be set or cleared with the <code>STI</code> (set interrupt-enable flag) and <code>CLI</code> (clear interrupt-enable flag) instructions</li>
+</ul>
+<h2 id="interrupt-descriptor-table"><a class="header-anchor" href="#interrupt-descriptor-table">¶</a>Interrupt descriptor table</h2>
+<p>The interrupt descriptor table (IDT) associates each exception or interrupt vector with a gate descriptor for the procedure or task used to service the associated exception or interrupt.</p>
+<p>The base addresses of the IDT should be aligned on an 8-byte boundary to maximize performance of cache line fills. The limit value is expressed in bytes and is added to the base address to get the address of the last valid byte. A limit value of 0 results in exactly 1 valid byte. Because IDT entries are always eight bytes long, the limit should always be one less than an integral multiple of eight (that is, 8N – 1).</p>
+<p>The <code>LIDT</code> instruction loads the IDTR register with the base address and limit held in a memory operand. This instruction can be executed only when the CPL is 0. It normally is used by the initialization code of an operating system when creating an IDT</p>
+<p><img src="https://i.imgur.com/2Cxiovn.png" alt=""></p>
+<h2 id="idt-descriptors"><a class="header-anchor" href="#idt-descriptors">¶</a>IDT DESCRIPTORS</h2>
+<ul>
+<li>The task gate contains the segment selector for a TSS for an exception and/or interrupt handler task</li>
+<li>Interrupt and trap gates contain a far pointer (segment selector and offset) that the processor uses to transfer program execution to a handler procedure in an exception- or interrupt-handler code segment<br>
+<img src="https://i.imgur.com/5TXaMZs.png" alt="" width="400"></li>
+</ul>
+<h2 id="exception-and-interrupt-handling"><a class="header-anchor" href="#exception-and-interrupt-handling">¶</a>Exception and interrupt handling</h2>
+<p>An interrupt gate or trap gate references an exception- or interrupt-handler procedure that runs in the context of the currently executing task. The segment selector for the gate points to a segment descriptor for an executable code segment in either the GDT or the current LDT. The offset field of the gate descriptor points to the beginning of the exception- or interrupt-handling procedure.<br>
+<img src="https://i.imgur.com/H3a5tMC.png" alt=""></p>
+<h3 id="exception-or-interrupt-handler-procedures"><a class="header-anchor" href="#exception-or-interrupt-handler-procedures">¶</a>Exception- or Interrupt-Handler Procedures</h3>
+<p>When the processor performs a call to the exception- or interrupt-handler procedure:</p>
+<ul>
+<li>If the handler procedure is going to be executed at a numerically lower privilege level, a stack switch occurs. When the stack switch occurs:
+<ol>
+<li>The segment selector and stack pointer for the stack to be used by the handler are obtained from the TSS for the currently executing task. On this new stack, the processor pushes the stack segment selector and stack pointer of the interrupted procedure.</li>
+<li>The processor then saves the current state of the EFLAGS, CS, and EIP registers on the new stack</li>
+<li>If an exception causes an error code to be saved, it is pushed on the new stack after the EIP value</li>
+</ol>
+</li>
+<li>If the handler procedure is going to be executed at the same privilege level as the interrupted procedure
+<ol>
+<li>The processor saves the current state of the EFLAGS, CS, and EIP registers on the current stack</li>
+<li>If an exception causes an error code to be saved, it is pushed on the current stack after the EIP value<br>
+<img src="https://i.imgur.com/cz81uJd.png" alt=""></li>
+</ol>
+</li>
+</ul>
+<ul>
+<li>To return from an exception- or interrupt-handler procedure, the handler must use the IRET (or IRETD) instruction.The IRET instruction is similar to the RET instruction except that it restores the saved flags into the EFLAGS register</li>
+</ul>
+<h4 id="protection"><a class="header-anchor" href="#protection">¶</a>Protection</h4>
+<p>The processor does not permit transfer of execution to an exception- or interrupt-handler procedure in a less privileged code segment than the CPL.</p>
+<ul>
+<li>The processor checks the DPL of the interrupt or trap gate only if an exception or interrupt is generated with an INT n, INT 3, or INTO instruction. Here, the CPL must be less than or equal to the DPL of the gate.
+<ul>
+<li>prevents application programs or procedures running at privilege level 3 from using a software interrupt to access critical exception handlers, such as the page-fault handler</li>
+</ul>
+</li>
+<li>Hardware-generated interrupts and processor-detected exceptions, the processor ignores the DPL of interrupt and trap gates.</li>
 </ul>
 
       
@@ -475,7 +527,9 @@ KeyManagementServicePort: 1688</li>
       
         <div class="post-tags">
           
-            <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
+            <a href="/tags/OSDI/" rel="tag"># OSDI</a>
+          
+            <a href="/tags/note/" rel="tag"># note</a>
           
         </div>
       
@@ -488,8 +542,8 @@ KeyManagementServicePort: 1688</li>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/02/OSDI-Booting-process/" rel="next" title="OSDI-Booting-process">
-                <i class="fa fa-chevron-left"></i> OSDI-Booting-process
+              <a href="/2018/04/19/OSDI-Process-Management/" rel="next" title="OSDI-Process-Management">
+                <i class="fa fa-chevron-left"></i> OSDI-Process-Management
               </a>
             
           </div>
@@ -498,8 +552,8 @@ KeyManagementServicePort: 1688</li>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/19/OSDI-Process-Management/" rel="prev" title="OSDI-Process-Management">
-                OSDI-Process-Management <i class="fa fa-chevron-right"></i>
+              <a href="/2018/05/13/OSDI-Memory-Management/" rel="prev" title="OSDI-Memory Management">
+                OSDI-Memory Management <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -654,7 +708,7 @@ KeyManagementServicePort: 1688</li>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#office-2010-on-ubuntu-16-04"><span class="nav-number">1.</span> <span class="nav-text">¶Office 2010 on Ubuntu 16.04</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#interrupt-and-exception-handling"><span class="nav-number">1.</span> <span class="nav-text">¶Interrupt and exception handling</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#interrupt-and-exception-overview"><span class="nav-number">1.1.</span> <span class="nav-text">¶Interrupt and exception overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exception-and-interrupt-vectors"><span class="nav-number">1.2.</span> <span class="nav-text">¶Exception and interrupt vectors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sources-of-interrupts"><span class="nav-number">1.3.</span> <span class="nav-text">¶Sources of interrupts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#source-of-exceptions"><span class="nav-number">1.4.</span> <span class="nav-text">¶Source of exceptions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exception-classifications"><span class="nav-number">1.5.</span> <span class="nav-text">¶Exception classifications</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#enabling-and-disabling-interrupts"><span class="nav-number">1.6.</span> <span class="nav-text">¶Enabling and disabling interrupts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#interrupt-descriptor-table"><span class="nav-number">1.7.</span> <span class="nav-text">¶Interrupt descriptor table</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#idt-descriptors"><span class="nav-number">1.8.</span> <span class="nav-text">¶IDT DESCRIPTORS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exception-and-interrupt-handling"><span class="nav-number">1.9.</span> <span class="nav-text">¶Exception and interrupt handling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#exception-or-interrupt-handler-procedures"><span class="nav-number">1.9.1.</span> <span class="nav-text">¶Exception- or Interrupt-Handler Procedures</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#protection"><span class="nav-number">1.9.1.1.</span> <span class="nav-text">¶Protection</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
