@@ -7,7 +7,7 @@ tags: NCTU
 
 ## Introduction
 The Java 2 Platform, Micro Edition (J2ME) is aimed at the market for consumer and embedded electronic devices: cellular telephones, two-way pagers, Personal Digital Assistants (PDAs), set-top boxes, and other small devices.
-1. Connected Limited Device Configuration(CDC):cellular phones, pagers, PDAs
+1. Connected Limited Device Configuration(CLDC):cellular phones, pagers, PDAs
 2. Connected Device Configuration(CDC):set-top boxes, and Internet TVs
 
 Mobile Information Device Profile (MIDP) runs on top of the CLDC which includes the KVM virtual machine. Several profiles run on top of CDC such as foundation, Personal andPersonal Basis. In this article will focus on CDC's JVM:Compact Virtual Machine(CVM).
